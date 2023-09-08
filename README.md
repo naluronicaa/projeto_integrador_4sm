@@ -1,16 +1,11 @@
 # pi4sm
 
-A new Flutter project.
+Um projeto integrador do Quarto Semestre de Sistema de informação
 
-## Getting Started
+## Mais sobre o projeto
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+O objetivo desse projeto é desenvolver um software multiplataforma que
+irá facilitar a compra e venda de veículos na internet, o próprio software
+irá buscar em vários sites veículos que estão anunciados e o usuário poderá
+adicionar filtros a sua pesquisa facilitando ainda mais sua busca por seu
+carro ideal.

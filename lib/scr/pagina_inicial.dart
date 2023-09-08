@@ -13,7 +13,7 @@ class _PaginaInicialState extends State<PaginaInicial> {
   List imagens = [
     "pg1.png",
     "pg2.png",
-    "pg3.png"
+    "pg3.png",
   ];
 
   List textosP = [
@@ -29,8 +29,8 @@ class _PaginaInicialState extends State<PaginaInicial> {
   ];
 
   List informacoes = [
-    "Agora com o Car Hunter ficou bem mais fácil de você encontrar o seu carro ideal.",
-    "Nosso objetivo é garantir que você consiga salvar dinheiro e tempo!"
+    "Agora com o Car Hunters ficou bem mais fácil de você encontrar o seu carro ideal.",
+    "Nosso objetivo é garantir que você consiga salvar dinheiro e tempo!",
     "Entre com sua conta agora e encontre seu carro."
   ];
 

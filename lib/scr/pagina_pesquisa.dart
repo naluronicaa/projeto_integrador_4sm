@@ -10,6 +10,8 @@ class _PaginaPrincipal extends StatefulWidget {
 class __PaginaPrincipalState extends State<_PaginaPrincipal> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      
+    );
   }
 }

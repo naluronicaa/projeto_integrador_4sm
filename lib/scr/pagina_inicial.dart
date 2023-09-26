@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pi4sm/scr/pagina_login.dart';
+import 'package:pi4sm/scr/pagina_pesquisa.dart';
 import 'package:pi4sm/widgets/app_large_text.dart';
 import 'package:pi4sm/widgets/app_text.dart';
 
@@ -78,7 +78,7 @@ class _PaginaInicialState extends State<PaginaInicial> {
                           size: 24
                           ),
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const PaginaLogin()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const PaginaPrincipal()));
                           }
                       )
                     ],

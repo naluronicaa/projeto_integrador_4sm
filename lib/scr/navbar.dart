@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pi4sm/scr/pagina_usuario.dart';
 
 class NavBar extends StatelessWidget{
   @override
@@ -13,7 +14,9 @@ class NavBar extends StatelessWidget{
           ListTile(
             leading: Icon(Icons.account_circle),
             title: Text('Minha Conta', style: TextStyle(fontSize: 20)),
-            onTap: () =>  null,
+            onTap: () {
+              Navigator.push(context,MaterialPageRoute(builder: (context) => const PaginaUsuario()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.shopping_cart_checkout),

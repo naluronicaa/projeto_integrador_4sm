@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pi4sm/scr/pagina_inicial.dart';
 import 'package:pi4sm/scr/pagina_usuario.dart';
+import 'package:pi4sm/scr/pagina_pesquisa.dart';
 
 class NavBar extends StatelessWidget{
   @override
@@ -7,36 +9,43 @@ class NavBar extends StatelessWidget{
     return Drawer(
       child : ListView(
         children: [
-          ListTile(
+          const ListTile(
             leading: Icon(Icons.menu),
             title: Text('Menu', style: TextStyle(fontSize: 20)),
           ),
+          const Divider(),
           ListTile(
-            leading: Icon(Icons.account_circle),
-            title: Text('Minha Conta', style: TextStyle(fontSize: 20)),
+            leading: const Icon(Icons.account_circle),
+            title: const  Text('Minha Conta', style: TextStyle(fontSize: 20)),
             onTap: () {
-              Navigator.push(context,MaterialPageRoute(builder: (context) => const PaginaUsuario()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PaginaUsuario()));
             },
           ),
           ListTile(
-            leading: Icon(Icons.shopping_cart_checkout),
-            title: Text('Ver Ofertas', style: TextStyle(fontSize: 20)),
+            leading: const Icon(Icons.shopping_cart_checkout),
+            title: const Text('Ver Ofertas', style: TextStyle(fontSize: 20)),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PaginaPrincipal()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.star),
+            title: const Text('Meus Favoritos', style: TextStyle(fontSize: 20)),
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PaginaPrincipal()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.support_agent),
+            title: const Text('Suporte', style: TextStyle(fontSize: 20)),
             onTap: () =>  null,
           ),
           ListTile(
-            leading: Icon(Icons.star),
-            title: Text('Meus Favoritos', style: TextStyle(fontSize: 20)),
-            onTap: () =>  null,
-          ),
-          ListTile(
-            leading: Icon(Icons.support_agent),
-            title: Text('Suporte', style: TextStyle(fontSize: 20)),
-            onTap: () =>  null,
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Sair', style: TextStyle(fontSize: 20)),
-            onTap: () =>  null,
+            leading: const Icon(Icons.exit_to_app),
+            title: const Text('Sair', style: TextStyle(fontSize: 20)),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PaginaInicial()));
+            },
           ),
         ],
       )

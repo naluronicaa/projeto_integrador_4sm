@@ -44,7 +44,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
       drawer: NavBar(),
 
       //cabeçalho
-      appBar: AppBar(
+       appBar: AppBar(
         title: const Text('Olá, <Nome>!', style: TextStyle(fontSize: 15, color : Colors.white)),
         actions: <Widget>[
           IconButton(

@@ -26,32 +26,52 @@ class _PaginaUsuarioState extends State<PaginaUsuario> {
          ),
          iconTheme: const IconThemeData(color: Colors.white),
          toolbarHeight: 110,
-         actions: <Widget> [
-            IconButton(
-              onPressed: () => null,
-              icon: const Row(children: [
-                Text('Car Hunters', style: TextStyle(fontSize: 18,color: Colors.white),),
-                SizedBox(width: 20),
-                Icon(Icons.account_circle, size: 40),
-                SizedBox(width: 20)
-              ],)
-              ),
-            
+         actions: const <Widget> [
+            Text('Car Hunters', style: TextStyle(fontSize: 18, color:Colors.white)),
+            SizedBox(width: 10),
+            Icon(Icons.account_circle, size: 40),
+            SizedBox(width: 10),
          ],
          
          ),
           body: Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(32),
-            decoration: const BoxDecoration(
-              image: DecorationImage(image: AssetImage('assets/fundo.png'),fit: BoxFit.cover)
-            ),
-            child: Center(
-              child: Container(
-                width: 100,
-                height: 100,
-                child: Image.asset('assets/fundouser.jpeg'),
-              )
+            color: const Color.fromARGB(255, 237, 235, 235),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 100,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(50.0),
+                    color: const Color.fromARGB(150, 135, 157, 168),
+                  ),
+                ),
+                
+                Positioned(
+                  top:110,
+                  left: 30,
+                  right: 30,
+                  child: Container(
+                    padding: const EdgeInsets.all(80.0),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15)
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5), // Define a cor da sombra
+                            blurRadius: 2, // Define o desfoque da sombra
+                            offset: const Offset(0,4), // Define o deslocamento da sombra
+                          ),
+                        ],
+                      ),
+                  ),
+                )
+
+              ],
             ),
           ),
     );

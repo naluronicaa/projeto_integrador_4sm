@@ -8,18 +8,22 @@ class PaginaPrincipal extends StatefulWidget {
   State<PaginaPrincipal> createState() => PaginaPrincipalState();
 }
 
+
 class PaginaPrincipalState extends State<PaginaPrincipal> {
-  List<String> marca = ["Renault", "Fiat", "Toyota", "Ford", "Chevrolet", "Honda", "Hyundai", "Mitsubishi", "Volkswagen"];
+  
+
+  List<String> marca = ["Renault", "Fiat", "Toyota", "Ford", "Chevrolet", "Honda", "Hyundai", "Mitsubishi", "Volkswagen", "Outra"];
   List<String> ano = ["2000 - 2005", "2005 - 2010", "2010 - 2020", "acima de 2020"];
   List<String> modelo = ["modelo 1", "modelo 2", "modelo 3"];//terminar
   List<String> km = ["0km - 10000km", "10000km - 20000km", "20000km - 30000km", "50000km - 60000km", "mais que 60000km"];
-  List<String> carroceria = ["Buggy", "Conversível", "Cupê", "Hatchback", "Sedâ", "Minivan", "Perua/SW", "Picape", "Esportivo", "Van"];
+  List<String> carroceria = ["Buggy", "Conversível", "Cupê", "Hatchback", "Sedâ", "Minivan", "Perua/SW", "Picape", "Esportivo", "Van", "Outra"];
   List<String> cor = ["Preto", "Prata", "Branco", "Vermelho", "Marrom", "Azul", "Amarelo", "Outra"];
-  List<String> novoounao = ["novo", "usado"];
+  List<String> novoounao = ["Novo", "Seminovo","Usado"];
   List<String> preco = ["caro", "nao caro"];
-  List<String> tabelaFIP = ["Comparar", "não comparar"];
-  List<String> loca = ["próximo a mim", "qualquer lugar"];
+  List<String> tabelaFIP = ["Comparar", "Não comparar"];
+  List<String> loca = ["Próximo a mim", "Qualquer lugar"];
   List<String> relevancia = ["Mais Relevantes", "Maior Preço", "Menor Preço", "Menor KM"];
+
 
   final valorMarca = ValueNotifier('');
   final valorAno = ValueNotifier('');
@@ -32,7 +36,6 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
   final valorTabelaFIP = ValueNotifier('');
   final valorRelev = ValueNotifier('');
   final valorLoca = ValueNotifier('');
-
 
   @override
   Widget build(BuildContext context) {
@@ -116,8 +119,9 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                   child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    
-                    IconButton(
+                    Tooltip(
+                      message: 'Resetar Filtros',
+                      child: IconButton(
                       onPressed: () {
                         valorMarca.value = '';
                         valorAno.value = '';
@@ -132,6 +136,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                         valorLoca.value = '';
                       }, 
                     icon: const Icon(Icons.loop_outlined)),
+                    ),
 
                     //filtro marca
                     Container(
@@ -146,6 +151,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                                 value: opcao,
                                 child: Text(opcao),
                               )).toList(),
+                              
                             );
                           })
                         
@@ -247,7 +253,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                         child: ValueListenableBuilder(
                           valueListenable: valorNov, builder: (BuildContext constext, String value, _){
                             return DropdownButton<String>(
-                              hint: const Text("Usado"),
+                              hint: const Text("Condição"),
                               value: (value.isEmpty) ? null : value,
                               onChanged: (escolha) => valorNov.value = escolha.toString(),
                               items: novoounao.map((opcao) => DropdownMenuItem(

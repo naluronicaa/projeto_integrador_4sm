@@ -31,7 +31,7 @@ class _PaginaLoginState extends State<PaginaLogin> {
           ),
           body: TabBarView(
             children: [
-              LoginPage(), // Conteúdo da primeira aba (página de login)
+              const LoginPage(), // Conteúdo da primeira aba (página de login)
               CadastroPage(), // Conteúdo da segunda aba (página de cadastro)
             ],
           ),

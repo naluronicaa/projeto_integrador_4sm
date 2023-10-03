@@ -13,8 +13,21 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
   
 
   List<String> marca = ["Renault", "Fiat", "Toyota", "Ford", "Chevrolet", "Honda", "Hyundai", "Mitsubishi", "Volkswagen", "Outra"];
-  List<String> ano = ["2000 - 2005", "2005 - 2010", "2010 - 2020", "acima de 2020"];
-  List<String> modelo = ["modelo 1", "modelo 2", "modelo 3"];//terminar
+  List<String> ano = ["abaixo de 2000","2000 - 2005", "2005 - 2010", "2010 - 2020", "acima de 2020"];
+  
+  Map<String, List<String>> modelosPorMarca = {
+  "Renault":["Kwid", "Stepway", "Logan",  "Captur", "Duster", "Oroch", "Sandero", "Outro"],
+  "Fiat": ["Uno", "Mobi", "Argo", " Toro", "Strada", "Palio", "Siena", "Cronos", "Outro"],
+  'Toyota' : ["Corolla", "Hilux", "Etios", "Yaris", "RAV4", "SW4", "Prius", "Sequoia", "Outro"],
+  'Ford' : ["Ka", "Fiesta", "Focus", "EcoSport", "Fusion", "Ranger", "Edge", "Mustang", "Outro"],
+  'Chevrolet' : ["Onix", "Prisma", "Cobalt", "Corsa", "Tracker", "Cruze", "Equinox", "S10", "Outro"],
+  'Honda' : ["Civic", "Fit", "HR-V", 'City', 'CR-V','WR-V','Accord', 'Insight', 'Outro'],
+  'Hyundai' :  ['HB20', 'Creta', 'Tucson', 'Santa Fe', 'ix35', 'Veloster', 'Elantra', 'Outro'],
+  'Mitsubishi' : ['Lancer', 'ASX', 'Outlander', 'Pajero', 'Eclipse Cross', 'Outro'],
+  'Volkswagen' : ['Gol', 'Polo', 'Virtus', 'Jetta', 'Voyage', 'Fox', 'Golf', 'Saveiro', 'Amarok', 'Outro'],
+  'Outra' : ['Outros']
+  };
+
   List<String> km = ["0km - 10000km", "10000km - 20000km", "20000km - 30000km", "50000km - 60000km", "mais que 60000km"];
   List<String> carroceria = ["Buggy", "Conversível", "Cupê", "Hatchback", "Sedâ", "Minivan", "Perua/SW", "Picape", "Esportivo", "Van", "Outra"];
   List<String> cor = ["Preto", "Prata", "Branco", "Vermelho", "Marrom", "Azul", "Amarelo", "Outra"];
@@ -27,7 +40,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
 
   final valorMarca = ValueNotifier('');
   final valorAno = ValueNotifier('');
-  final valorModelo = ValueNotifier('');
+  String valorModelo = '';
   final valorKM = ValueNotifier('');
   final valorCarroceria = ValueNotifier('');
   final valorCor = ValueNotifier('');
@@ -45,7 +58,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
 
       //cabeçalho
        appBar: AppBar(
-        title: const Text('Olá, <Nome>!', style: TextStyle(fontSize: 15, color : Colors.white)),
+        title: const Text('Olá!', style: TextStyle(fontSize: 15, color : Colors.white)),
         actions: <Widget>[
           IconButton(
             onPressed: () {}, 
@@ -125,7 +138,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                       onPressed: () {
                         valorMarca.value = '';
                         valorAno.value = '';
-                        valorModelo.value = '';
+                        valorModelo = '';
                         valorKM.value = '';
                         valorCarroceria.value = '';
                         valorCor.value = '';
@@ -146,7 +159,10 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                             return DropdownButton<String>(
                               hint: const Text("Marca"),
                               value: (value.isEmpty) ? null : value,
-                              onChanged: (escolha) => valorMarca.value = escolha.toString(),
+                              onChanged: (escolha) {
+                                valorModelo = '';
+                                valorMarca.value = escolha.toString();
+                              },
                               items: marca.map((opcao) => DropdownMenuItem(
                                 value: opcao,
                                 child: Text(opcao),
@@ -176,22 +192,29 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                       ),
                       
                     //filtro Modelo
-                    Container(
-                        padding: const EdgeInsets.all(3.0),
-                        child: ValueListenableBuilder(
-                          valueListenable: valorModelo, builder: (BuildContext constext, String value, _){
-                            return DropdownButton<String>(
-                              hint: const Text("Modelo"),
-                              value: (value.isEmpty) ? null : value,
-                              onChanged: (escolha) => valorModelo.value = escolha.toString(),
-                              items: modelo.map((opcao) => DropdownMenuItem(
-                                value: opcao,
-                                child: Text(opcao),
-                              )).toList(),
-                            );
-                          })
-                        
+                   Container(
+                      padding: const EdgeInsets.all(3.0),
+                      child: ValueListenableBuilder(
+                        valueListenable: valorMarca, 
+                        builder: (BuildContext context, String marcaSelecionada, _) {
+                          
+                          //a lista de modelos correspondente à marca selecionada
+                          List<String> modelos = modelosPorMarca[marcaSelecionada] ?? [];
+
+                          return DropdownButton<String>(
+                            hint: const Text("Modelo"),
+                            value: (valorModelo.isEmpty) ? null : valorModelo,
+                            onChanged: (escolha) => valorModelo = escolha.toString(),
+                            
+                            items: modelos.map((opcao) => DropdownMenuItem(
+                              value: opcao,
+                              child: Text(opcao),
+                            )).toList(),
+                          );
+                        }
                       ),
+                    ),
+
 
                     //filtro KM
                     Container(
@@ -247,8 +270,8 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                         
                       ),
 
-                      //filtro novo ou não
-                      Container(
+                     //filtro novo ou não
+                    Container(
                         padding: const EdgeInsets.all(3.0),
                         child: ValueListenableBuilder(
                           valueListenable: valorNov, builder: (BuildContext constext, String value, _){
@@ -265,8 +288,8 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                         
                       ),
 
-                      //filtro preço
-                      Container(
+                    //filtro preço
+                    Container(
                         padding: const EdgeInsets.all(3.0),
                         child: ValueListenableBuilder(
                           valueListenable: valorPreco, builder: (BuildContext constext, String value, _){
@@ -283,13 +306,13 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                         
                       ),
 
-                      //filtro tabelaFIP
-                      Container(
+                    //filtro tabelaFIP
+                    Container(
                         padding: const EdgeInsets.all(3.0),
                         child: ValueListenableBuilder(
                           valueListenable: valorTabelaFIP, builder: (BuildContext constext, String value, _){
                             return DropdownButton<String>(
-                              hint: const Text("Tabela FIP"),
+                              hint: const Text("Tabela FIPE"),
                               value: (value.isEmpty) ? null : value,
                               onChanged: (escolha) => valorTabelaFIP.value = escolha.toString(),
                               items: tabelaFIP.map((opcao) => DropdownMenuItem(
@@ -301,8 +324,8 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                         
                       ),
 
-                      //filtro localização
-                      Container(
+                    //filtro localização
+                    Container(
                         padding: const EdgeInsets.all(3.0),
                         child: ValueListenableBuilder(
                           valueListenable: valorLoca, builder: (BuildContext constext, String value, _){
@@ -319,8 +342,8 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                         
                       ),
 
-                      //filtro relevancia
-                      Container(
+                    //filtro relevancia
+                    Container(
                         padding: const EdgeInsets.all(3.0),
                         child: ValueListenableBuilder(
                           valueListenable: valorRelev, builder: (BuildContext constext, String value, _){
@@ -336,8 +359,6 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                           })
                         
                       ),
-
-
 
                   ],
                 )

@@ -19,35 +19,50 @@ void _showEditModal(BuildContext context) {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const Text('Altere seus Dados', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 15),
 
             const Text('Nome Usuario'),
 
             const TextField(
-              decoration: InputDecoration(labelText: 'Novo Nome'),
+              decoration: InputDecoration(labelText: 'Novo Nome', labelStyle: TextStyle(color: Colors.grey)),
             ),
 
             const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                // Lógica para atualizar o nome
-                Navigator.pop(context); // Fechar o modal após a ação
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 15, 59, 80))
+
+            Container(
+              alignment: Alignment.centerRight,
+              width: 200, 
+              height: 50, 
+              child: ElevatedButton(
+                onPressed: () {
+                  // Lógica para atualizar o nome
+                  Navigator.pop(context); // Fechar o modal após a ação
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 15, 59, 80)),
+                ),
+                child: Text('Atualizar Nome', style: TextStyle(color: Colors.white)),
               ),
-              child: Text('Atualizar Nome', style: TextStyle(color: Colors.white)),
             ),
+
 
             const SizedBox(height: 10),
 
-             const Text('Nome Email'),
+             const Text('Email'),
 
             const TextField(
-              decoration: InputDecoration(labelText: 'Novo Email'),
+              decoration: InputDecoration(labelText: 'Novo Email', labelStyle: TextStyle(color: Colors.grey)),
             ),
 
             const SizedBox(height: 10),
-            ElevatedButton(
+
+            Container(
+              alignment: Alignment.centerRight,
+              width: 200, 
+              height: 50, 
+
+              child: ElevatedButton(
               onPressed: () {
                 // Lógica para atualizar o nome
                 Navigator.pop(context); // Fechar o modal após a ação
@@ -58,16 +73,24 @@ void _showEditModal(BuildContext context) {
               child: Text('Atualizar Email', style: TextStyle(color: Colors.white)),
             ),
 
+
+            ),
+            
             const SizedBox(height: 10),
 
-             const Text('Nome Senha'),
+             const Text('Senha'),
 
             const TextField(
-              decoration: InputDecoration(labelText: 'Novo Senha'),
+              decoration: InputDecoration(labelText: 'Nova Senha', labelStyle: TextStyle(color: Colors.grey)),
             ),
 
             const SizedBox(height: 10),
-            ElevatedButton(
+            Container(
+              alignment: Alignment.centerRight,
+              width: 200, 
+              height: 50, 
+
+              child: ElevatedButton(
               onPressed: () {
                 // Lógica para atualizar o nome
                 Navigator.pop(context); // Fechar o modal após a ação
@@ -77,9 +100,16 @@ void _showEditModal(BuildContext context) {
               ),
               child: Text('Atualizar Senha', style: TextStyle(color: Colors.white)),
             ),
+            ),
+            
 
             const SizedBox(height: 30),
-            ElevatedButton(
+            Container(
+              alignment: Alignment.centerLeft,
+              width: 200, 
+              height: 50, 
+
+              child: ElevatedButton(
               onPressed: () {
                 // Lógica para atualizar o nome
                 
@@ -90,6 +120,8 @@ void _showEditModal(BuildContext context) {
               ),
               child: Text('Deletar Conta', style: TextStyle(color: Colors.white)),
             ),
+            )
+            
             
           ],
         ),

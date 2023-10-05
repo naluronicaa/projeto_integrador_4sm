@@ -50,6 +50,8 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
   final valorRelev = ValueNotifier('');
   final valorLoca = ValueNotifier('');
 
+  final ScrollController controleDeFIltros = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,8 +128,12 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                     ),
                   ],
                 ),
+                child: Scrollbar(
+                controller: controleDeFIltros,
+                
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
+                  controller: controleDeFIltros,
 
                   child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -366,6 +372,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                 
                                 
               ),
+            )
             )
           ],
         ),

@@ -33,3 +33,5 @@ app.post("/users", (req, res) => {
 app.get("/users", (req, res) => {
     res.json(users)
 })
+
+app.listen(3000, () => console.log("up and running"))

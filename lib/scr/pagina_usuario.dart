@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart'; 
-
 import 'package:pi4sm/scr/navbar.dart';
 
 class PaginaUsuario extends StatefulWidget {
@@ -8,6 +7,97 @@ class PaginaUsuario extends StatefulWidget {
   @override
   State<PaginaUsuario> createState() => _PaginaUsuarioState();
 }
+
+void _showEditModal(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    builder: (context) {
+      return SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+
+            const Text('Nome Usuario'),
+
+            const TextField(
+              decoration: InputDecoration(labelText: 'Novo Nome'),
+            ),
+
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                // Lógica para atualizar o nome
+                Navigator.pop(context); // Fechar o modal após a ação
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 15, 59, 80))
+              ),
+              child: Text('Atualizar Nome', style: TextStyle(color: Colors.white)),
+            ),
+
+            const SizedBox(height: 10),
+
+             const Text('Nome Email'),
+
+            const TextField(
+              decoration: InputDecoration(labelText: 'Novo Email'),
+            ),
+
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                // Lógica para atualizar o nome
+                Navigator.pop(context); // Fechar o modal após a ação
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255,15, 59, 80))
+              ),
+              child: Text('Atualizar Email', style: TextStyle(color: Colors.white)),
+            ),
+
+            const SizedBox(height: 10),
+
+             const Text('Nome Senha'),
+
+            const TextField(
+              decoration: InputDecoration(labelText: 'Novo Senha'),
+            ),
+
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                // Lógica para atualizar o nome
+                Navigator.pop(context); // Fechar o modal após a ação
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 15, 59, 80))
+              ),
+              child: Text('Atualizar Senha', style: TextStyle(color: Colors.white)),
+            ),
+
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                // Lógica para atualizar o nome
+                
+                Navigator.pop(context); // Fechar o modal após a ação
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 216, 7, 7))
+              ),
+              child: Text('Deletar Conta', style: TextStyle(color: Colors.white)),
+            ),
+            
+          ],
+        ),
+      );
+    },
+  );
+}
+
 
 class _PaginaUsuarioState extends State<PaginaUsuario> {
   @override
@@ -53,9 +143,12 @@ class _PaginaUsuarioState extends State<PaginaUsuario> {
                   left: 30,
                   right: 30,
                   child: Container(
-                    padding: const EdgeInsets.all(80.0),
+                    padding: const EdgeInsets.all(90.0),
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        image: const DecorationImage(
+                          image: AssetImage('assets/fundouser.jpeg'), // Substitua pelo caminho da sua imagem
+                          fit: BoxFit.cover, // Ajuste de acordo com sua necessidade (cover, contain, etc.)
+                        ),
                         borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(15),
                           bottomRight: Radius.circular(15)
@@ -69,8 +162,35 @@ class _PaginaUsuarioState extends State<PaginaUsuario> {
                         ],
                       ),
                   ),
-                )
+                ),
 
+                Positioned(
+                  top:130,
+                  left: 100,
+                  right: 100,
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.account_circle, size: 90), // Icone no topo
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Nome do Usuário', style: TextStyle(fontSize: 20)), // Texto abaixo do ícone
+                        const SizedBox(height: 10), // Espaço entre o texto e o IconButton
+                        IconButton(
+                          onPressed: () {
+                            _showEditModal(context);
+                          },
+                          icon: const Icon(Icons.create_rounded),
+                          iconSize: 20,
+                        ),
+                      ],
+                    ) // Espaço entre o ícone e o texto
+                     // IconButton ao lado do texto
+                  ],
+                ),
+                ),
               ],
             ),
           ),

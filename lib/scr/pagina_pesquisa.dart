@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pi4sm/scr/navbar.dart';
+import 'package:pi4sm/scr/ofertas.dart';
 
 class PaginaPrincipal extends StatefulWidget {
   const PaginaPrincipal({super.key});
@@ -40,7 +41,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
 
   final valorMarca = ValueNotifier('');
   final valorAno = ValueNotifier('');
-  String valorModelo = '';
+  final valorModelo = ValueNotifier('');
   final valorKM = ValueNotifier('');
   final valorCarroceria = ValueNotifier('');
   final valorCor = ValueNotifier('');
@@ -51,6 +52,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
   final valorLoca = ValueNotifier('');
 
   final ScrollController controleDeFIltros = ScrollController();
+  final ScrollController controleDeAnuncios = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +93,44 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
         color: const Color.fromARGB(255, 237, 235, 235),
         child : Stack(
           children: [
+            //exibição dos produtos
+            Positioned(
+              top: 180,
+              left: 25,
+              right: 25,
+              bottom: 0,
+              child: Container(
+                padding: const EdgeInsets.all(10.0),
+                child: ListView(
+                children: [
+                  ProdutoWidget(nome: 'Produto A', preco: 'R\$100,00'),
+                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
+                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
+                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
+                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
+                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
+                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
+                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
+                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
+                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
+                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
+                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
+                  // Adicione mais produtos conforme necessário
+                ],
+              )
+              ),
+            ),
+
+            Positioned(
+              top: 100,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(95.0),
+                color: const Color.fromARGB(255, 237, 235, 235),
+              ),
+            ),
+
             Positioned(
               top: 100,
               left: 0,
@@ -112,6 +152,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
               ), 
             ),
             
+            //filtros
             Positioned(
               top: 220,
               left: 20,
@@ -144,7 +185,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                       onPressed: () {
                         valorMarca.value = '';
                         valorAno.value = '';
-                        valorModelo = '';
+                        valorModelo.value = '';
                         valorKM.value = '';
                         valorCarroceria.value = '';
                         valorCor.value = '';
@@ -166,7 +207,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               hint: const Text("Marca"),
                               value: (value.isEmpty) ? null : value,
                               onChanged: (escolha) {
-                                valorModelo = '';
+                                valorModelo.value = '';
                                 valorMarca.value = escolha.toString();
                               },
                               items: marca.map((opcao) => DropdownMenuItem(
@@ -209,8 +250,11 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
 
                           return DropdownButton<String>(
                             hint: const Text("Modelo"),
-                            value: (valorModelo.isEmpty) ? null : valorModelo,
-                            onChanged: (escolha) => valorModelo = escolha.toString(),
+                            value: (valorModelo.value.isEmpty) ? null : valorModelo.value,
+                            onChanged: (escolha) {
+                              valorModelo.value = escolha.toString();
+                              //print(escolha);
+                            },
                             
                             items: modelos.map((opcao) => DropdownMenuItem(
                               value: opcao,
@@ -368,12 +412,13 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
 
                   ],
                 )
-                )
-                
-                                
+                )                 
               ),
             )
-            )
+            ),
+          
+            
+
           ],
         ),
       )

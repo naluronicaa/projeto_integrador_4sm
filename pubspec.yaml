@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   url_launcher: ^6.0.13
+  web_smooth_scroll: ^1.1.0
 
 
   # The following adds the Cupertino Icons font to your application.

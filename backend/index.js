@@ -9,6 +9,7 @@ let users = [
     'senha' : 'pi4SM2023'
    }
    ]
+
 let carros = [
     //simulação - webmotors:
     {
@@ -21,7 +22,8 @@ let carros = [
         'localização': 'Presidente prudente - SP',
         'carroceria' : 'picape',
         'condição' : 'Seminovo',
-        'tabela FIPE' : 'R$80.635,00'
+        'tabela FIPE' : 'R$80.635,00',
+        'site' : 'https://www.webmotors.com.br/carros/estoque?lkid=1022'
     },
     {
         'marca': 'JEEP',
@@ -33,7 +35,8 @@ let carros = [
         'localização': 'Ananindeua - PA',
         'carroceria' : 'utilitário esportivo',
         'condição' : 'Seminovo',
-        'tabela FIPE' : 'R$152.674,00'
+        'tabela FIPE' : 'R$152.674,00',
+        'site' : 'https://www.webmotors.com.br/carros/estoque?lkid=1022'
     },
     {
         'marca': 'VolksWagen',
@@ -45,7 +48,8 @@ let carros = [
         'localização': 'Ananindeua - PA',
         'carroceria' : 'sedã',
         'condição' : 'Seminovo',
-        'tabela FIPE' : 'R$62.804,00'
+        'tabela FIPE' : 'R$62.804,00',
+        'site' : 'https://www.webmotors.com.br/carros/estoque?lkid=1022'
 
     },
     {
@@ -58,7 +62,8 @@ let carros = [
         'localização': 'Ananindeua - PA',
         'carroceria' : 'sedã',
         'condição' : 'Seminovo',
-        'tabela FIPE' : 'R$134.953,00'
+        'tabela FIPE' : 'R$134.953,00',
+        'site' : 'https://www.webmotors.com.br/carros/estoque?lkid=1022'
     },
     {
         'marca': 'Honda',
@@ -70,7 +75,8 @@ let carros = [
         'localização': 'São Paulo - SP',
         'carroceria' : 'hatchback',
         'condição' : 'usado',
-        'tabela FIPE' : 'R$114.301,00'
+        'tabela FIPE' : 'R$114.301,00',
+        'site' : 'https://www.webmotors.com.br/carros/estoque?lkid=1022'
     },
     {
         'marca': 'Mitsubishi',
@@ -82,7 +88,8 @@ let carros = [
         'localização': 'Americana - SP',
         'carroceria' : 'utilitário esportivo',
         'condição' : 'Novo',
-        'tabela FIPE' : 'R$56.715,00'
+        'tabela FIPE' : 'R$56.715,00',
+        'site' : 'https://www.webmotors.com.br/carros/estoque?lkid=1022'
     },
     {
         'marca': 'Renault',
@@ -94,7 +101,8 @@ let carros = [
         'localização': 'Colombo - PR',
         'carroceria' : 'van/utilitário',
         'condição' : 'Seminovo',
-        'tabela FIPE' : 'R$155.849,00'
+        'tabela FIPE' : 'R$155.849,00',
+        'site' : 'https://www.webmotors.com.br/carros/estoque?lkid=1022'
     },
     {
         'marca': 'Ford',
@@ -106,7 +114,8 @@ let carros = [
         'localização': 'Rio de Janeiro - RJ',
         'carroceria' : 'utilitário/esportivo',
         'condição' : 'Seminovo',
-        'tabela FIPE' : 'R$52.082,00'
+        'tabela FIPE' : 'R$52.082,00',
+        'site' : 'https://www.webmotors.com.br/carros/estoque?lkid=1022'
     },
     {
         'marca': 'Hyundai',
@@ -118,7 +127,8 @@ let carros = [
         'localização': 'Rio de Janeiro - RJ',
         'carroceria' : 'hatchback',
         'condição' : 'Seminovo',
-        'tabela FIPE' : 'R$46.818,00'
+        'tabela FIPE' : 'R$46.818,00',
+        'site' : 'https://www.webmotors.com.br/carros/estoque?lkid=1022'
     },
     {
         'marca': 'Chevrolet',
@@ -130,7 +140,8 @@ let carros = [
         'localização': 'Uberlândia - MG',
         'carroceria' : 'sedã',
         'condição' : 'usado',
-        'tabela FIPE' : 'R$90.403,00'
+        'tabela FIPE' : 'R$90.403,00',
+        'site' : 'https://www.webmotors.com.br/carros/estoque?lkid=1022'
     },
 
     //simulação - olx:
@@ -144,7 +155,8 @@ let carros = [
         'localização': 'Rolândia - PR',
         'carroceria' : 'picape',
         'condição' : 'Seminovo',
-        'tabela FIPE' : 'R$94.421,00'
+        'tabela FIPE' : 'R$94.421,00',
+        'site' : 'https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios?f=c&utm_source=google&utm_medium=paid-search&utm_campaign=sebrisbr_gg_se_bo_tf_ao_wb_at_ol_pf&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwYGGJK6SPjfpBYDcnvfYIkaAE3TSmZ813H7ACNvid8eZLjxUTQikTxoC1IAQAvD_BwE&gclsrc=aw.ds'
     },
     {
         'marca': 'Renault',
@@ -156,7 +168,8 @@ let carros = [
         'localização': 'Florianópolis - SC',
         'carroceria' : 'sedã',
         'condição' : 'Seminovo',
-        'tabela FIPE' : 'R$72.466,00'
+        'tabela FIPE' : 'R$72.466,00',
+        'site' : 'https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios?f=c&utm_source=google&utm_medium=paid-search&utm_campaign=sebrisbr_gg_se_bo_tf_ao_wb_at_ol_pf&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwYGGJK6SPjfpBYDcnvfYIkaAE3TSmZ813H7ACNvid8eZLjxUTQikTxoC1IAQAvD_BwE&gclsrc=aw.ds'
     },
     {
         'marca': 'Hyundai',
@@ -168,7 +181,8 @@ let carros = [
         'localização': 'Salvador - BA',
         'carroceria' : 'hatch',
         'condição' : 'usado',
-        'tabela FIPE' : 'R$44.276,00'
+        'tabela FIPE' : 'R$44.276,00',
+        'site' : 'https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios?f=c&utm_source=google&utm_medium=paid-search&utm_campaign=sebrisbr_gg_se_bo_tf_ao_wb_at_ol_pf&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwYGGJK6SPjfpBYDcnvfYIkaAE3TSmZ813H7ACNvid8eZLjxUTQikTxoC1IAQAvD_BwE&gclsrc=aw.ds'
     },
     {
         'marca': 'Fiat',
@@ -180,7 +194,8 @@ let carros = [
         'localização': 'São Paulo - SP',
         'carroceria' : 'sedã',
         'condição' : 'Seminovo',
-        'tabela FIPE' : 'R$72.165,00'
+        'tabela FIPE' : 'R$72.165,00',
+        'site' : 'https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios?f=c&utm_source=google&utm_medium=paid-search&utm_campaign=sebrisbr_gg_se_bo_tf_ao_wb_at_ol_pf&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwYGGJK6SPjfpBYDcnvfYIkaAE3TSmZ813H7ACNvid8eZLjxUTQikTxoC1IAQAvD_BwE&gclsrc=aw.ds'
     },
     {
         'marca': 'Honda',
@@ -192,7 +207,8 @@ let carros = [
         'localização': 'Santo André - SP ',
         'carroceria' : 'sedã',
         'condição' : 'usado',
-        'tabela FIPE' : 'R$16.801,00'
+        'tabela FIPE' : 'R$16.801,00',
+        'site' : 'https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios?f=c&utm_source=google&utm_medium=paid-search&utm_campaign=sebrisbr_gg_se_bo_tf_ao_wb_at_ol_pf&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwYGGJK6SPjfpBYDcnvfYIkaAE3TSmZ813H7ACNvid8eZLjxUTQikTxoC1IAQAvD_BwE&gclsrc=aw.ds'
     },
     {
         'marca': 'Chevrolet',
@@ -204,7 +220,8 @@ let carros = [
         'localização': 'São Paulo - SP ',
         'carroceria' : 'picape',
         'condição' : 'Seminovo',
-        'tabela FIPE' : ''//não especificado no site
+        'tabela FIPE' : 'R$ 278.000',
+        'site' : 'https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios?f=c&utm_source=google&utm_medium=paid-search&utm_campaign=sebrisbr_gg_se_bo_tf_ao_wb_at_ol_pf&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwYGGJK6SPjfpBYDcnvfYIkaAE3TSmZ813H7ACNvid8eZLjxUTQikTxoC1IAQAvD_BwE&gclsrc=aw.ds'
     },
     {
         'marca': 'Peugeot',
@@ -216,7 +233,8 @@ let carros = [
         'localização': 'Juazeiro do Norte - CE',
         'carroceria' : 'hatch',
         'condição' : 'Seminovo',
-        'tabela FIPE' : '73.815,00'
+        'tabela FIPE' : '73.815,00',
+        'site' : 'https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios?f=c&utm_source=google&utm_medium=paid-search&utm_campaign=sebrisbr_gg_se_bo_tf_ao_wb_at_ol_pf&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwYGGJK6SPjfpBYDcnvfYIkaAE3TSmZ813H7ACNvid8eZLjxUTQikTxoC1IAQAvD_BwE&gclsrc=aw.ds'
     },
     {
         'marca': 'JEEP',
@@ -228,7 +246,8 @@ let carros = [
         'localização': 'Goiânia - GO',
         'carroceria' : 'SUV',
         'condição' : 'usado',
-        'tabela FIPE' : 'R$78.071,00'
+        'tabela FIPE' : 'R$78.071,00',
+        'site' : 'https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios?f=c&utm_source=google&utm_medium=paid-search&utm_campaign=sebrisbr_gg_se_bo_tf_ao_wb_at_ol_pf&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwYGGJK6SPjfpBYDcnvfYIkaAE3TSmZ813H7ACNvid8eZLjxUTQikTxoC1IAQAvD_BwE&gclsrc=aw.ds'
     },
     {
         'marca': 'Ford',
@@ -240,7 +259,8 @@ let carros = [
         'localização': 'São Caetano do Sul - SP',
         'carroceria' : 'hatch',
         'condição' : 'Usado',
-        'tabela FIPE' : 'R$54.053,00'
+        'tabela FIPE' : 'R$54.053,00',
+        'site' : 'https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios?f=c&utm_source=google&utm_medium=paid-search&utm_campaign=sebrisbr_gg_se_bo_tf_ao_wb_at_ol_pf&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwYGGJK6SPjfpBYDcnvfYIkaAE3TSmZ813H7ACNvid8eZLjxUTQikTxoC1IAQAvD_BwE&gclsrc=aw.ds'
     },
     {
         'marca': 'Nissan',
@@ -252,7 +272,8 @@ let carros = [
         'localização': 'Niterói - RJ',
         'carroceria' : 'SUV',
         'condição' : 'Usado',
-        'tabela FIPE' : 'R$95.757,00'
+        'tabela FIPE' : 'R$95.757,00',
+        'site' : 'https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios?f=c&utm_source=google&utm_medium=paid-search&utm_campaign=sebrisbr_gg_se_bo_tf_ao_wb_at_ol_pf&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwYGGJK6SPjfpBYDcnvfYIkaAE3TSmZ813H7ACNvid8eZLjxUTQikTxoC1IAQAvD_BwE&gclsrc=aw.ds'
     },
     //simulação - icarros:
     {
@@ -265,7 +286,8 @@ let carros = [
         'localização': 'São Vicente - SP',
         'carroceria' : 'hatch',
         'condição' : 'usado',
-        'tabela FIPE' : 'R$32.271,00'
+        'tabela FIPE' : 'R$32.271,00',
+        'site' : 'https://www.icarros.com.br/ache/listaanuncios.jsp?bid=1&-pri_40000.1_&ord=35&reg=city&parceiro_id=86&midia_id=719&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwRIXzGNDJ0yzKssPPfztjUsi-jI_vJCZgRji8xddF9cJixvu40wiqhoCEgAQAvD_BwE'
     },
     {
         'marca': 'Peugeot',
@@ -277,7 +299,8 @@ let carros = [
         'localização': 'São Paulo - SP',
         'carroceria' : 'hatch',
         'condição' : 'usado',
-        'tabela FIPE' : 'R$29.505,00'
+        'tabela FIPE' : 'R$29.505,00',
+        'site' : 'https://www.icarros.com.br/ache/listaanuncios.jsp?bid=1&-pri_40000.1_&ord=35&reg=city&parceiro_id=86&midia_id=719&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwRIXzGNDJ0yzKssPPfztjUsi-jI_vJCZgRji8xddF9cJixvu40wiqhoCEgAQAvD_BwE'
     },
     {
         'marca': 'Fiat',
@@ -289,7 +312,8 @@ let carros = [
         'localização': 'Porto Alegre - RS',
         'carroceria' : 'hatch',
         'condição' : 'Usado',
-        'tabela FIPE' : 'R$24.431,00'
+        'tabela FIPE' : 'R$24.431,00',
+        'site' : 'https://www.icarros.com.br/ache/listaanuncios.jsp?bid=1&-pri_40000.1_&ord=35&reg=city&parceiro_id=86&midia_id=719&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwRIXzGNDJ0yzKssPPfztjUsi-jI_vJCZgRji8xddF9cJixvu40wiqhoCEgAQAvD_BwE'
     },
     {
         'marca': 'Ford',
@@ -301,7 +325,8 @@ let carros = [
         'localização': 'São Paulo - SP',
         'carroceria' : 'hatch',
         'condição' : 'Usado',
-        'tabela FIPE' : 'R$29.160,00'
+        'tabela FIPE' : 'R$29.160,00',
+        'site' : 'https://www.icarros.com.br/ache/listaanuncios.jsp?bid=1&-pri_40000.1_&ord=35&reg=city&parceiro_id=86&midia_id=719&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwRIXzGNDJ0yzKssPPfztjUsi-jI_vJCZgRji8xddF9cJixvu40wiqhoCEgAQAvD_BwE'
     },
     {
         'marca': 'Citroen',
@@ -313,7 +338,8 @@ let carros = [
         'localização': 'Curitiba - PR',
         'carroceria' : 'hatch',
         'condição' : 'Usado',
-        'tabela FIPE' : 'R$26.517,00'
+        'tabela FIPE' : 'R$26.517,00',
+        'site' : 'https://www.icarros.com.br/ache/listaanuncios.jsp?bid=1&-pri_40000.1_&ord=35&reg=city&parceiro_id=86&midia_id=719&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwRIXzGNDJ0yzKssPPfztjUsi-jI_vJCZgRji8xddF9cJixvu40wiqhoCEgAQAvD_BwE'
     },
     {
         'marca': 'Volkswagen',
@@ -325,7 +351,8 @@ let carros = [
         'localização': 'Belém -PA',
         'carroceria' : 'hatch',
         'condição' : 'Usado',
-        'tabela FIPE' : 'R$55.018,00'
+        'tabela FIPE' : 'R$55.018,00',
+        'site' : 'https://www.icarros.com.br/ache/listaanuncios.jsp?bid=1&-pri_40000.1_&ord=35&reg=city&parceiro_id=86&midia_id=719&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwRIXzGNDJ0yzKssPPfztjUsi-jI_vJCZgRji8xddF9cJixvu40wiqhoCEgAQAvD_BwE'
     },
     {
         'marca': 'Hyundai',
@@ -337,7 +364,8 @@ let carros = [
         'localização': 'São José dos Campos - SP',
         'carroceria' : 'hatch',
         'condição' : 'Usado',
-        'tabela FIPE' : 'R$47.079,00'
+        'tabela FIPE' : 'R$47.079,00',
+        'site' : 'https://www.icarros.com.br/ache/listaanuncios.jsp?bid=1&-pri_40000.1_&ord=35&reg=city&parceiro_id=86&midia_id=719&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwRIXzGNDJ0yzKssPPfztjUsi-jI_vJCZgRji8xddF9cJixvu40wiqhoCEgAQAvD_BwE'
     },
     {
         'marca': 'Kia',
@@ -349,7 +377,8 @@ let carros = [
         'localização': 'Brasília - DF',
         'carroceria' : 'hatch',
         'condição' : 'Usado',
-        'tabela FIPE' : 'R$32.549,00'
+        'tabela FIPE' : 'R$32.549,00',
+        'site' : 'https://www.icarros.com.br/ache/listaanuncios.jsp?bid=1&-pri_40000.1_&ord=35&reg=city&parceiro_id=86&midia_id=719&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwRIXzGNDJ0yzKssPPfztjUsi-jI_vJCZgRji8xddF9cJixvu40wiqhoCEgAQAvD_BwE'
     },
     {
         'marca': 'Renault',
@@ -361,7 +390,8 @@ let carros = [
         'localização': 'Natal - RN',
         'carroceria' : 'hatch',
         'condição' : 'Usado',
-        'tabela FIPE' : 'R$44.254,00'
+        'tabela FIPE' : 'R$44.254,00',
+        'site' : 'https://www.icarros.com.br/ache/listaanuncios.jsp?bid=1&-pri_40000.1_&ord=35&reg=city&parceiro_id=86&midia_id=719&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwRIXzGNDJ0yzKssPPfztjUsi-jI_vJCZgRji8xddF9cJixvu40wiqhoCEgAQAvD_BwE'
     },
     {
         'marca': 'Nissan',
@@ -373,7 +403,8 @@ let carros = [
         'localização': 'Rio de Janeiro - RJ',
         'carroceria' : 'hatch',
         'condição' : 'USado',
-        'tabela FIPE' : 'R$153.734,00'
+        'tabela FIPE' : 'R$153.734,00',
+        'site' : 'https://www.icarros.com.br/ache/listaanuncios.jsp?bid=1&-pri_40000.1_&ord=35&reg=city&parceiro_id=86&midia_id=719&gclid=CjwKCAjwyY6pBhA9EiwAMzmfwRIXzGNDJ0yzKssPPfztjUsi-jI_vJCZgRji8xddF9cJixvu40wiqhoCEgAQAvD_BwE'
     }
 ]
 

@@ -58,7 +58,7 @@ class _CarroWidgetState extends State<CarroWidget> {
                 const SizedBox(height: 2),
                 Text(widget.preco, style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text('Tabela FIPE: $widget.fipe', style: const TextStyle(fontSize: 10, color: Color.fromARGB(130, 30, 30, 30))),
+                Text('Tabela FIPE:' + widget.fipe, style: const TextStyle(fontSize: 10, color: Color.fromARGB(130, 30, 30, 30))),
                 const SizedBox(height: 2),
                 Text('cor: xxxx, carroderia:xxxx,\ncondição:xxxx,ano:xxxx, km', style: TextStyle(fontSize: 8, color: Color.fromARGB(130, 30, 30, 30))),
               ],
@@ -130,7 +130,7 @@ class _CarroWidgetState extends State<CarroWidget> {
                 const SizedBox(height: 2),
                 Text(widget.preco, style: const TextStyle(fontSize: 17, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text('Tabela FIPE: $widget.fipe', style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30)))
+                Text('Tabela FIPE:' + widget.fipe, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30)))
               ],
             ),
 

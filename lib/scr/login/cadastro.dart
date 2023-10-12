@@ -38,7 +38,8 @@ class CadastroPage extends StatelessWidget {
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
+            child: SingleChildScrollView(
+              child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const Text(
@@ -101,6 +102,7 @@ class CadastroPage extends StatelessWidget {
                 // Adicione mais coisas aqui
               ],
             ),
+            ) 
           ),
         ),
     );

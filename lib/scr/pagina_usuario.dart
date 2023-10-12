@@ -8,6 +8,7 @@ class PaginaUsuario extends StatefulWidget {
   State<PaginaUsuario> createState() => _PaginaUsuarioState();
 }
 
+//modal
 void _showEditModal(BuildContext context) {
   showModalBottomSheet(
     context: context,
@@ -15,7 +16,7 @@ void _showEditModal(BuildContext context) {
       return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -138,7 +139,7 @@ class _PaginaUsuarioState extends State<PaginaUsuario> {
       extendBodyBehindAppBar: true,
       drawer: NavBar(),
       appBar: AppBar(
-         title: const Text('Minhas informações', style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
+         title: const Text('Sobre mim', style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
          backgroundColor: const Color.fromARGB(255, 15, 59, 80),
          shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -203,13 +204,17 @@ class _PaginaUsuarioState extends State<PaginaUsuario> {
                   child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const SizedBox(height: 8),
                     const Icon(Icons.account_circle, size: 90), // Icone no topo
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text('Nome do Usuário', style: TextStyle(fontSize: 20)), // Texto abaixo do ícone
-                        const SizedBox(height: 10), // Espaço entre o texto e o IconButton
+                        const Expanded(
+                          child: Text('<Nome>', style: TextStyle(fontSize: 20), textAlign: TextAlign.center)
+                        ),
+                        
+                        const SizedBox(height: 2), // Espaço entre o texto e o IconButton
                         IconButton(
                           onPressed: () {
                             _showEditModal(context);

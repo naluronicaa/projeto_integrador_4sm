@@ -103,19 +103,19 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                 padding: const EdgeInsets.all(10.0),
                 child: ListView(
                 children: [
-                  ProdutoWidget(nome: 'Produto A', preco: 'R\$100,00'),
-                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
-                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
-                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
-                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
-                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
-                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
-                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
-                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
-                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
-                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
-                  ProdutoWidget(nome: 'Produto B', preco: 'R\$50,00'),
-                  // Adicione mais produtos conforme necessário
+                  CarroWidget(nome: 'carro A', preco: 'R\$100,00', fipe: 'R\$100,00'),
+                  CarroWidget(nome: 'carro B', preco: 'R\$50,00', fipe: 'R\$100,00'),
+                  CarroWidget(nome: 'carro c', preco: 'R\$50,00', fipe: 'R\$100,00'),
+                  CarroWidget(nome: 'carro B', preco: 'R\$50,00', fipe: 'R\$100,00'),
+                  CarroWidget(nome: 'carro B', preco: 'R\$50,00', fipe: 'R\$100,00'),
+                  CarroWidget(nome: 'carro B', preco: 'R\$50,00', fipe: 'R\$100,00'),
+                  CarroWidget(nome: 'carro B', preco: 'R\$50,00', fipe: 'R\$100,00'),
+                  CarroWidget(nome: 'carro B', preco: 'R\$50,00', fipe: 'R\$100,00'),
+                  CarroWidget(nome: 'carro B', preco: 'R\$50,00', fipe: 'R\$100,00'),
+                  CarroWidget(nome: 'carro B', preco: 'R\$50,00', fipe: 'R\$100,00'),
+                  CarroWidget(nome: 'carro B', preco: 'R\$50,00', fipe: 'R\$100,00'),
+                  CarroWidget(nome: 'carro B', preco: 'R\$50,00', fipe: 'R\$100,00'),
+                  
                 ],
               )
               ),
@@ -136,7 +136,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
               left: 0,
               right: 0,
               child: Container(
-                padding: const EdgeInsets.all(25.0),
+                padding: const EdgeInsets.all(30.0),
                 color: const Color.fromARGB(150, 135, 157, 168),
                 child: const TextField(
                   decoration: InputDecoration(
@@ -163,9 +163,9 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.5), // Define a cor da sombra
-                      blurRadius: 2, // Define o desfoque da sombra
-                      offset: const Offset(0,4), // Define o deslocamento da sombra
+                      color: Colors.grey.withOpacity(0.5), 
+                      blurRadius: 2, 
+                      offset: const Offset(0,4),
                     ),
                   ],
                 ),
@@ -183,17 +183,17 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                       message: 'Resetar Filtros',
                       child: IconButton(
                       onPressed: () {
-                        valorMarca.value = '';
-                        valorAno.value = '';
-                        valorModelo.value = '';
-                        valorKM.value = '';
+                        valorMarca.value = '';//x
+                        valorAno.value = '';//x
+                        valorModelo.value = '';//x
+                        valorKM.value = '';//x
                         valorCarroceria.value = '';
                         valorCor.value = '';
                         valorNov.value = '';
-                        valorPreco.value = '';
-                        valorTabelaFIP.value = '';
-                        valorRelev.value = '';
-                        valorLoca.value = '';
+                        valorPreco.value = '';//x
+                        valorTabelaFIP.value = '';//x
+                        valorRelev.value = '';//x
+                        valorLoca.value = '';//x
                       }, 
                     icon: const Icon(Icons.loop_outlined)),
                     ),

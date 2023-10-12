@@ -62,7 +62,7 @@ class _PaginaInicialState extends State<PaginaInicial> {
                   )
               ),
               child: Container(
-                margin: const EdgeInsets.only(top:40, left: 60, right: 20),
+                margin: const EdgeInsets.only(top:40, left: 30, right: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -74,19 +74,19 @@ class _PaginaInicialState extends State<PaginaInicial> {
                         Container(
                           margin: const EdgeInsets.only(top: 20, bottom: 40),
                           width: 300,
-                          child: AppTxt(size: 18, text: informacoes[index], color: Color.fromARGB(255, 15, 59, 80)),
+                          child: AppTxt(size: 18, text: informacoes[index], color: const Color.fromARGB(255, 15, 59, 80)),
                         ),
 
                         FloatingActionButton.extended(
                           label: AppTxt(size: 15, text: "Cadastre-se", color: Colors.white),
-                          backgroundColor:Color.fromARGB(255, 15, 59, 80),
+                          backgroundColor:const Color.fromARGB(255, 15, 59, 80),
                           icon: const Icon(
                             Icons.login,
                             color: Colors.white,
                             size: 24
                             ),
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => PaginaLogin()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const PaginaLogin()));
                             }
                         )
                       ],
@@ -99,7 +99,7 @@ class _PaginaInicialState extends State<PaginaInicial> {
                           height: index == indexDots?25:8,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            color: index == indexDots?Color.fromARGB(255, 15, 59, 80):Color.fromARGB(100, 15, 59, 80)
+                            color: index == indexDots?const Color.fromARGB(255, 15, 59, 80):const Color.fromARGB(100, 15, 59, 80)
                           )
                         );
                       }),

@@ -1,11 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class CarroWidget extends StatefulWidget {
-  final String nome;
+  final String marca;
+  final String modelo;
+  final String cor;
+  final String ano;
   final String preco;
+  final String km;
+  final String localizacao;
+  final String carroceria;
+  final String condicao;
   final String fipe;
+  final String site; 
 
-  CarroWidget({required this.nome, required this.preco, required this.fipe});
+
+  CarroWidget(
+    {
+    required this.marca,
+    required this.modelo,
+    required this.cor,
+    required this.ano,
+    required this.preco,
+    required this.km,
+    required this.localizacao,
+    required this.carroceria,
+    required this.condicao,
+    required this.fipe,
+    required this.site,
+  }
+);
 
   @override
   _CarroWidgetState createState() => _CarroWidgetState();
@@ -14,12 +39,28 @@ class CarroWidget extends StatefulWidget {
 class _CarroWidgetState extends State<CarroWidget> {
   bool click = false;
 
+  Widget buildLogo() {
+  if (widget.site.contains('webmotors')) {
+    // Use o logo da Webmotors
+    return Image.asset('assets/logo_webm.png', width: 50, height: 50); // Substitua pelo caminho do seu logo da Webmotors
+  } else if (widget.site.contains('olx')) {
+    // Use o logo da OLX
+    return Image.asset('assets/logo_olx.png', width: 50, height: 50); // Substitua pelo caminho do seu logo da OLX
+  } else if (widget.site.contains('icarros')) {
+    // Use o logo da iCarros
+    return Image.asset('assets/logo_icarros.png', width: 50, height: 50); // Substitua pelo caminho do seu logo da iCarros
+  } else {
+    // Use o logo padrão se não for nenhuma das opções acima
+    return Image.asset('assets/logo_padrao.png', width: 50, height: 50); // Substitua pelo caminho do seu logo padrão
+  }
+}
+
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints){
       final bool isMobile = constraints.maxWidth < 600;
       return Container(
-        padding: EdgeInsets.all(2.0),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15.0),
@@ -34,7 +75,7 @@ class _CarroWidgetState extends State<CarroWidget> {
         child: isMobile ? 
           Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ClipRRect(
               borderRadius: const BorderRadius.only(
@@ -43,32 +84,36 @@ class _CarroWidgetState extends State<CarroWidget> {
               ),
               child: Image.asset(
                 'assets/car_default.png',
-                width: 50,
+                width: 100,
                 height: 100,
                 fit: BoxFit.cover,
               ),
             ),
+
+            const SizedBox(width: 20),
 
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //nome = Modelo + Marca
                 const SizedBox(height: 4),
-                Text(widget.nome, style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 30, 30, 30))),
+                Text(widget.modelo + ' ' + widget.marca, style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
                 Text(widget.preco, style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text('Tabela FIPE:' + widget.fipe, style: const TextStyle(fontSize: 10, color: Color.fromARGB(130, 30, 30, 30))),
+                Text('FIPE:' + widget.fipe, style: const TextStyle(fontSize: 10, color: Color.fromARGB(130, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text('cor: xxxx, carroderia:xxxx,\ncondição:xxxx,ano:xxxx, km', style: TextStyle(fontSize: 8, color: Color.fromARGB(130, 30, 30, 30))),
+                Text(widget.cor + ' ' +  widget.carroceria + ' \n' + widget.condicao +  ' ' + widget.ano + ' ' + widget.km, style: TextStyle(fontSize: 8, color: Color.fromARGB(130, 30, 30, 30))),
               ],
             ),
+
+            const SizedBox(width: 30),
 
             Column(
               children: [
                 Row(
                   children: [
-                    Text('<<logo empresa>>', style: TextStyle(fontSize: 10),),
+                    buildLogo(),
                     IconButton(
                       onPressed: () {
                         setState(() {
@@ -80,7 +125,7 @@ class _CarroWidgetState extends State<CarroWidget> {
                   ],
                 ),
 
-                Text('local  xxxx', style: TextStyle(fontSize: 10, color: Color.fromARGB(130, 30, 30, 30))),
+                Text(widget.localizacao, style: TextStyle(fontSize: 10, color: Color.fromARGB(130, 30, 30, 30))),
 
                 ElevatedButton(
                   onPressed: () {
@@ -95,7 +140,7 @@ class _CarroWidgetState extends State<CarroWidget> {
                       ),
                     ),
                   ),
-                  child: const Text('Ver Oferta', style: TextStyle(color: Colors.white)),
+                  child: const Text('Ver Oferta!', style: TextStyle(color: Colors.white)),
                 )
               ],
               
@@ -113,8 +158,8 @@ class _CarroWidgetState extends State<CarroWidget> {
               ),
               child: Image.asset(
                 'assets/car_default.png',
-                width: 90,
-                height: 80,
+                width: 100,
+                height: 100,
                 fit: BoxFit.cover,
               ),
             ),
@@ -126,11 +171,11 @@ class _CarroWidgetState extends State<CarroWidget> {
               children: [
                 //nome = Modelo + Marca
                 const SizedBox(height: 4),
-                Text(widget.nome, style: const TextStyle(fontSize: 17, color: Color.fromARGB(255, 30, 30, 30))),
+                Text(widget.modelo + ' ' + widget.marca, style: const TextStyle(fontSize: 17, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
                 Text(widget.preco, style: const TextStyle(fontSize: 17, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text('Tabela FIPE:' + widget.fipe, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30)))
+                Text('FIPE:' + widget.fipe, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30)))
               ],
             ),
 
@@ -140,11 +185,11 @@ class _CarroWidgetState extends State<CarroWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 4),
-                Text('ano : XXXX', style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
+                Text(widget.ano, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text('KM : XXXXX', style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
+                Text(widget.km, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text('local xxxxxxxx', style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30)))
+                Text(widget.localizacao, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30)))
               ],
             ),
 
@@ -154,11 +199,11 @@ class _CarroWidgetState extends State<CarroWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 4),
-                Text('cor : XXXX', style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
+                Text(widget.cor, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text('carroceria : XXXXX', style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
+                Text(widget.carroceria, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text('condição: xxxx', style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30)))
+                Text(widget.condicao, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30)))
               ],
             ),
             const SizedBox(width: 12),
@@ -170,21 +215,21 @@ class _CarroWidgetState extends State<CarroWidget> {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    Text('<<logo empresa>>'),
+                    buildLogo(),
                     IconButton(
                       onPressed: () {
                         setState(() {
                           click = !click;
                         });
                       },
-                      icon: Icon((click == true) ? Icons.star : Icons.star_border, color:Color.fromARGB(255, 223, 173, 44)),
+                      icon: Icon((click == true) ? Icons.star : Icons.star_border, color:const Color.fromARGB(255, 223, 173, 44)),
                     )
                   ],
                 ),
 
                 ElevatedButton(
                   onPressed: () {
-                    // colocar o link
+                    _launchURL(widget.site);
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 15, 59, 80)), 
@@ -194,7 +239,7 @@ class _CarroWidgetState extends State<CarroWidget> {
                       ),
                     ),
                   ),
-                  child: const Text('Ver Oferta', style: TextStyle(color: Colors.white)),
+                  child: const Text('Ver Oferta!', style: TextStyle(color: Colors.white)),
                 )
               ],
               
@@ -203,6 +248,14 @@ class _CarroWidgetState extends State<CarroWidget> {
           ],
         )
       );
-    });
+    }
+    );
+  }
+  void _launchURL(String url) async {
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+    } else {
+      throw 'Não foi possível abrir a URL: $url';
+    }
   }
 }

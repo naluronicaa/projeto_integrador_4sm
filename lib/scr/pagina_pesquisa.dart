@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pi4sm/scr/navbar.dart';
 import 'package:pi4sm/scr/ofertas.dart';
+import 'package:pi4sm/scr/pagina_usuario.dart';
 
 class PaginaPrincipal extends StatefulWidget {
   const PaginaPrincipal({super.key});
@@ -65,7 +66,9 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
         title: const Text('Olá!', style: TextStyle(fontSize: 15, color : Colors.white)),
         actions: <Widget>[
           IconButton(
-            onPressed: () {}, 
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PaginaUsuario()));
+            }, 
             icon: const Row(
             children: <Widget>[
               Icon(Icons.star, color: Color.fromARGB(255, 223, 173, 44)),

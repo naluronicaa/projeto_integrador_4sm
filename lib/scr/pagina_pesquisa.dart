@@ -214,15 +214,19 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
               bottom: 0,
               child: Container(
                 padding: const EdgeInsets.all(10.0),
-                child: ListView(
-                  children: (carrosExibidos.isNotEmpty 
-                    ? carrosExibidos.map((carro) => carro).toList() 
-                    : [const Text("Nenhum veículo foi encontrado")]
-                  ),
+                child: ListView.separated(
+                  itemBuilder: (context, index) {
+                    return carrosExibidos.isNotEmpty 
+                      ? carrosExibidos[index] 
+                      : const Text("Nenhum veículo foi encontrado");
+                  },
+                  separatorBuilder: (context, index) => SizedBox(height: 15), // Espaçamento entre os itens
+                  itemCount: carrosExibidos.length,
                 ),
                 alignment: Alignment.center,
               ),
             ),
+
 
             Positioned(
               top: 100,

@@ -5,15 +5,11 @@ import 'package:pi4sm/scr/pagina_usuario.dart';
 
 class PaginaPrincipal extends StatefulWidget {
   const PaginaPrincipal({super.key});
-
   @override
   State<PaginaPrincipal> createState() => PaginaPrincipalState();
 }
 
-
 class PaginaPrincipalState extends State<PaginaPrincipal> {
-  
-
   List<String> marca = ["Renault", "Fiat", "Toyota", "Ford", "Chevrolet", "Honda", "Hyundai", "Mitsubishi", "Volkswagen", "Outra"];
   List<String> ano = ["abaixo de 2000","2000 - 2005", "2005 - 2010", "2010 - 2020", "acima de 2020"];
   
@@ -31,7 +27,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
   };
 
   List<String> km = ["0km - 10000km", "10000km - 20000km", "20000km - 30000km", "50000km - 60000km", "mais que 60000km"];
-  List<String> carroceria = ["Buggy", "Conversível", "Cupê", "Hatchback", "Sedâ", "Minivan", "Perua/SW", "Picape", "Esportivo", "Van", "Outra"];
+  List<String> carroceria = ["Buggy", "Conversível", "Cupê", "Hatchback", "Sedan", "Minivan", "Perua", "Picape", "Esportivo", "Van", "Outra"];
   List<String> cor = ["Preto", "Prata", "Branco", "Vermelho", "Marrom", "Azul", "Amarelo", "Outra"];
   List<String> novoounao = ["Novo", "Seminovo","Usado"];
   List<String> preco = ["caro", "nao caro"];
@@ -52,60 +48,9 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
   final valorRelev = ValueNotifier('');
   final valorLoca = ValueNotifier('');
 
-  final ScrollController controleDeFIltros = ScrollController();
-  final ScrollController controleDeAnuncios = ScrollController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      drawer: NavBar(),
-
-      //cabeçalho
-       appBar: AppBar(
-        title: const Text('Olá!', style: TextStyle(fontSize: 15, color : Colors.white)),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const PaginaUsuario()));
-            }, 
-            icon: const Row(
-            children: <Widget>[
-              Icon(Icons.star, color: Color.fromARGB(255, 223, 173, 44)),
-              SizedBox(width: 5), // Espaçamento entre o ícone e o texto
-              Text('Favoritos', style: TextStyle(color: Colors.white)),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-          Image.asset('assets/logo_HOC.png', width: 60, height: 60),
-          const SizedBox(width: 20),
-        ],
-        backgroundColor: const Color.fromARGB(255, 15, 59, 80),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15)
-          )
-        ),
-        toolbarHeight: 110,
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-
-      body: Container(
-        color: const Color.fromARGB(255, 237, 235, 235),
-        child : Stack(
-          children: [
-            //exibição dos produtos
-            Positioned(
-              top: 180,
-              left: 25,
-              right: 25,
-              bottom: 0,
-              child: Container(
-                padding: const EdgeInsets.all(10.0),
-                child: ListView(
-                children: [
+  //exemplo de carros sem puxar do banco pq eu preciso testar essa bagaça
+  List<CarroWidget> listaDeCarros = [
+    //exemplos, trocar depois pela conexão com o Banco de Dados
                   CarroWidget(
                     marca: 'Ford',
                     modelo: 'Fiesta',
@@ -190,8 +135,92 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                     site: 'https://www.icarros.com.br/',
                   ),
 
-                ],
-              )
+  ];
+
+  List<CarroWidget> carrosExibidos = [];
+
+  void atualizarLista() {
+    carrosExibidos = listaDeCarros.where((carro) {
+      bool marcaFiltrada = valorMarca.value.isEmpty || valorMarca.value == carro.marca;
+      bool modeloFiltrado = valorModelo.value.isEmpty || valorModelo.value == carro.modelo;
+      bool carroceriaFiltrada = valorCarroceria.value.isEmpty || valorCarroceria.value == carro.carroceria;
+      bool corFiltrada = valorCor.value.isEmpty || valorCor.value == carro.cor;
+      bool condicaoFiltrada = valorNov.value.isEmpty || valorNov.value == carro.condicao;
+      
+      return marcaFiltrada && modeloFiltrado && carroceriaFiltrada && corFiltrada && condicaoFiltrada;
+    }).toList();
+
+    setState(() {}); // Atualiza a UI
+  }
+
+
+  final ScrollController controleDeFIltros = ScrollController();
+  final ScrollController controleDeAnuncios = ScrollController();
+
+  @override
+    void initState() {
+      super.initState();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        atualizarLista();
+      });
+    }
+
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      drawer: NavBar(),
+
+      //cabeçalho
+       appBar: AppBar(
+        title: const Text('Olá!', style: TextStyle(fontSize: 15, color : Colors.white)),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PaginaUsuario()));
+            }, 
+            icon: const Row(
+            children: <Widget>[
+              Icon(Icons.star, color: Color.fromARGB(255, 223, 173, 44)),
+              SizedBox(width: 5), // Espaçamento entre o ícone e o texto
+              Text('Favoritos', style: TextStyle(color: Colors.white)),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          Image.asset('assets/logo_HOC.png', width: 60, height: 60),
+          const SizedBox(width: 20),
+        ],
+        backgroundColor: const Color.fromARGB(255, 15, 59, 80),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15)
+          )
+        ),
+        toolbarHeight: 110,
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+
+      body: Container(
+        color: const Color.fromARGB(255, 237, 235, 235),
+        child : Stack(
+          children: [
+            //exibição dos produtos
+            Positioned(
+              top: 180,
+              left: 25,
+              right: 25,
+              bottom: 0,
+              child: Container(
+                padding: const EdgeInsets.all(10.0),
+                child: ListView(
+                  children: (carrosExibidos.isNotEmpty 
+                    ? carrosExibidos.map((carro) => carro).toList() 
+                    : [const Text("Nenhum veículo foi encontrado")]
+                  ),
+                ),
+                alignment: Alignment.center,
               ),
             ),
 
@@ -257,17 +286,19 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                       message: 'Resetar Filtros',
                       child: IconButton(
                       onPressed: () {
-                        valorMarca.value = '';//x
-                        valorAno.value = '';//x
-                        valorModelo.value = '';//x
-                        valorKM.value = '';//x
+                        valorMarca.value = '';
+                        valorModelo.value = '';
+                        valorAno.value = '';
+                        valorKM.value = '';
                         valorCarroceria.value = '';
                         valorCor.value = '';
                         valorNov.value = '';
-                        valorPreco.value = '';//x
-                        valorTabelaFIP.value = '';//x
-                        valorRelev.value = '';//x
-                        valorLoca.value = '';//x
+                        valorPreco.value = '';
+                        valorRelev.value = '';
+                        valorLoca.value = '';
+
+                        atualizarLista();
+                        
                       }, 
                     icon: const Icon(Icons.loop_outlined)),
                     ),
@@ -283,6 +314,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               onChanged: (escolha) {
                                 valorModelo.value = '';
                                 valorMarca.value = escolha.toString();
+                                atualizarLista();
                               },
                               items: marca.map((opcao) => DropdownMenuItem(
                                 value: opcao,
@@ -302,7 +334,10 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                             return DropdownButton<String>(
                               hint: const Text("Ano"),
                               value: (value.isEmpty) ? null : value,
-                              onChanged: (escolha) => valorAno.value = escolha.toString(),
+                              onChanged: (escolha) {
+                                valorAno.value = escolha.toString();
+                                atualizarLista();
+                              },
                               items: ano.map((opcao) => DropdownMenuItem(
                                 value: opcao,
                                 child: Text(opcao),
@@ -327,7 +362,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                             value: (valorModelo.value.isEmpty) ? null : valorModelo.value,
                             onChanged: (escolha) {
                               valorModelo.value = escolha.toString();
-                              //print(escolha);
+                              atualizarLista();
                             },
                             
                             items: modelos.map((opcao) => DropdownMenuItem(
@@ -366,7 +401,10 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                             return DropdownButton<String>(
                               hint: const Text("Carroceria"),
                               value: (value.isEmpty) ? null : value,
-                              onChanged: (escolha) => valorCarroceria.value = escolha.toString(),
+                              onChanged: (escolha) {
+                                valorCarroceria.value = escolha.toString();
+                                atualizarLista();
+                              },
                               items: carroceria.map((opcao) => DropdownMenuItem(
                                 value: opcao,
                                 child: Text(opcao),
@@ -384,7 +422,10 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                             return DropdownButton<String>(
                               hint: const Text("Cor"),
                               value: (value.isEmpty) ? null : value,
-                              onChanged: (escolha) => valorCor.value = escolha.toString(),
+                              onChanged: (escolha) {
+                                valorCor.value = escolha.toString();
+                                atualizarLista();
+                              },
                               items: cor.map((opcao) => DropdownMenuItem(
                                 value: opcao,
                                 child: Text(opcao),
@@ -402,7 +443,10 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                             return DropdownButton<String>(
                               hint: const Text("Condição"),
                               value: (value.isEmpty) ? null : value,
-                              onChanged: (escolha) => valorNov.value = escolha.toString(),
+                              onChanged: (escolha) {
+                                valorNov.value = escolha.toString();
+                                atualizarLista();
+                              },
                               items: novoounao.map((opcao) => DropdownMenuItem(
                                 value: opcao,
                                 child: Text(opcao),
@@ -422,24 +466,6 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               value: (value.isEmpty) ? null : value,
                               onChanged: (escolha) => valorPreco.value = escolha.toString(),
                               items: preco.map((opcao) => DropdownMenuItem(
-                                value: opcao,
-                                child: Text(opcao),
-                              )).toList(),
-                            );
-                          })
-                        
-                      ),
-
-                    //filtro tabelaFIP
-                    Container(
-                        padding: const EdgeInsets.all(3.0),
-                        child: ValueListenableBuilder(
-                          valueListenable: valorTabelaFIP, builder: (BuildContext constext, String value, _){
-                            return DropdownButton<String>(
-                              hint: const Text("Tabela FIPE"),
-                              value: (value.isEmpty) ? null : value,
-                              onChanged: (escolha) => valorTabelaFIP.value = escolha.toString(),
-                              items: tabelaFIP.map((opcao) => DropdownMenuItem(
                                 value: opcao,
                                 child: Text(opcao),
                               )).toList(),

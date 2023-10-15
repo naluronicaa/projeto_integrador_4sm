@@ -26,14 +26,14 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
   'Outra' : ['Outros']
   };
 
-  List<String> km = ["0km - 10000km", "10000km - 20000km", "20000km - 30000km", "50000km - 60000km", "mais que 60000km"];
+  List<String> km = ["abaixo 10000", "10000 - 20000", "20000 - 30000", "50000 - 60000", "acima de 60000"];
   List<String> carroceria = ["Buggy", "Conversível", "Cupê", "Hatchback", "Sedan", "Minivan", "Perua", "Picape", "Esportivo", "Van", "Outra"];
   List<String> cor = ["Preto", "Prata", "Branco", "Vermelho", "Marrom", "Azul", "Amarelo", "Outra"];
   List<String> novoounao = ["Novo", "Seminovo","Usado"];
-  List<String> preco = ["caro", "nao caro"];
-  List<String> tabelaFIP = ["Comparar", "Não comparar"];
+  List<String> preco = ["Abaixo de 10000.00", "10000.00 - 20000.00", "20000.00 - 30000.00", "30000.00 - 40000.00", "40000.00 - 50000.00", "50000.00 - 60000.00", "60000.00 - 70000.00", "70000.00 - 80000.00", "80000.00 - 90000.00", "Acima de 90000.00"];
+
   List<String> loca = ["Próximo a mim", "Qualquer lugar"];
-  List<String> relevancia = ["Mais Relevantes", "Maior Preço", "Menor Preço", "Menor KM"];
+  List<String> relevancia =["Maior Preço", "Menor Preço", "Maior KM", "Menor KM"];
 
 
   final valorMarca = ValueNotifier('');
@@ -56,7 +56,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                     modelo: 'Fiesta',
                     cor: 'Preto',
                     ano: '2019',
-                    preco: 'R\$35.000,00',
+                    preco: '35000.00',
                     km: '30.000',
                     localizacao: 'São Paulo - SP',
                     carroceria: 'Hatchback',
@@ -70,7 +70,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                     modelo: 'Onix',
                     cor: 'Branco',
                     ano: '2020',
-                    preco: 'R\$40.000,00',
+                    preco: '40000.00',
                     km: '25.000',
                     localizacao: 'Rio de Janeiro - RJ',
                     carroceria: 'Sedan',
@@ -84,7 +84,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                     modelo: 'Golf',
                     cor: 'Azul',
                     ano: '2018',
-                    preco: 'R\$45.000,00',
+                    preco: '45000.00',
                     km: '35.000',
                     localizacao: 'Belo Horizonte - MG',
                     carroceria: 'Hatchback',
@@ -98,7 +98,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                     modelo: 'Corolla',
                     cor: 'Prata',
                     ano: '2021',
-                    preco: 'R\$60.000,00',
+                    preco: '60000.00',
                     km: '10.000',
                     localizacao: 'Curitiba - PR',
                     carroceria: 'Sedan',
@@ -112,7 +112,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                     modelo: 'Civic',
                     cor: 'Cinza',
                     ano: '2017',
-                    preco: 'R\$38.000,00',
+                    preco: '38000.00',
                     km: '40.000',
                     localizacao: 'Porto Alegre - RS',
                     carroceria: 'Sedan',
@@ -126,7 +126,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                     modelo: 'HB20',
                     cor: 'Vermelho',
                     ano: '2019',
-                    preco: 'R\$36.000,00',
+                    preco: '36000.00',
                     km: '20.000',
                     localizacao: 'Salvador - BA',
                     carroceria: 'Hatchback',
@@ -139,6 +139,63 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
 
   List<CarroWidget> carrosExibidos = [];
 
+  bool anoFiltrado(String anoCarro, String filtro) {
+    if (filtro == "abaixo de 2000") {
+      return int.parse(anoCarro) < 2000;
+    } else if (filtro == "acima de 2020") {
+      return int.parse(anoCarro) > 2020;
+    } else {
+      List<String> intervalo = filtro.split(" - ");
+      int anoMin = int.parse(intervalo[0]);
+      int anoMax = int.parse(intervalo[1]);
+      int anoCarroInt = int.parse(anoCarro);
+
+      return anoCarroInt >= anoMin && anoCarroInt <= anoMax;
+    }
+  }
+
+  bool quilometragemFiltrada(String kmCarro, String filtro) {
+    if (filtro.contains('abaixo')) {
+      int valorMax = int.parse(filtro.replaceAll('abaixo ', '').replaceAll('.', '').replaceAll(',', '').replaceAll(' ', ''));
+      int kmCarroInt = int.parse(kmCarro.replaceAll('km', '').replaceAll('.', '').replaceAll(',', '').replaceAll(' ', ''));
+      return kmCarroInt < valorMax;
+    } else if (filtro.contains('acima')) {
+      int valorMin = int.parse(filtro.replaceAll('acima de ', '').replaceAll('.', '').replaceAll(',', '').replaceAll(' ', ''));
+      int kmCarroInt = int.parse(kmCarro.replaceAll('km', '').replaceAll('.', '').replaceAll(',', '').replaceAll(' ', ''));
+      return kmCarroInt > valorMin;
+    } else {
+      List<String> intervalo = filtro.split(" - ");
+      int kmMin = int.parse(intervalo[0].replaceAll('km', '').replaceAll('.', '').replaceAll(',', '').replaceAll(' ', ''));
+      int kmMax = int.parse(intervalo[1].replaceAll('km', '').replaceAll('.', '').replaceAll(',', '').replaceAll(' ', ''));
+      int kmCarroInt = int.parse(kmCarro.replaceAll('km', '').replaceAll('.', '').replaceAll(',', '').replaceAll(' ', ''));
+
+      return kmCarroInt >= kmMin && kmCarroInt <= kmMax;
+    }
+  }
+
+  double converterPreco(String precoCarro) {
+    return double.parse(precoCarro.replaceAll('.', '').replaceAll(',', '.'));
+  }
+
+
+  bool precoFiltrado(String precoCarro, String filtro) {
+    double precoCarroDouble = converterPreco(precoCarro);
+
+    if (filtro.startsWith('Abaixo de')) {
+      double valorMax = converterPreco(filtro.substring(10));
+      return precoCarroDouble <= valorMax;
+    } else if (filtro.startsWith('Acima de')) {
+      double valorMin = converterPreco(filtro.substring(9));
+      return precoCarroDouble >= valorMin;
+    } else {
+      List<String> intervalo = filtro.split(" - ");
+      double precoMin = converterPreco(intervalo[0]);
+      double precoMax = converterPreco(intervalo[1]);
+
+      return precoCarroDouble >= precoMin && precoCarroDouble <= precoMax;
+    }
+  }
+
   void atualizarLista() {
     carrosExibidos = listaDeCarros.where((carro) {
       bool marcaFiltrada = valorMarca.value.isEmpty || valorMarca.value == carro.marca;
@@ -146,12 +203,27 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
       bool carroceriaFiltrada = valorCarroceria.value.isEmpty || valorCarroceria.value == carro.carroceria;
       bool corFiltrada = valorCor.value.isEmpty || valorCor.value == carro.cor;
       bool condicaoFiltrada = valorNov.value.isEmpty || valorNov.value == carro.condicao;
-      
-      return marcaFiltrada && modeloFiltrado && carroceriaFiltrada && corFiltrada && condicaoFiltrada;
+      bool anoPassaFiltro = valorAno.value.isEmpty || anoFiltrado(carro.ano, valorAno.value);
+      bool kmPassaFiltro = valorKM.value.isEmpty || quilometragemFiltrada(carro.km, valorKM.value);
+      bool precoPassaFiltro = valorPreco.value.isEmpty || precoFiltrado(carro.preco, valorPreco.value);
+
+      return marcaFiltrada && modeloFiltrado && carroceriaFiltrada && corFiltrada && condicaoFiltrada && anoPassaFiltro && kmPassaFiltro && precoPassaFiltro;
     }).toList();
 
-    setState(() {}); // Atualiza a UI
+    if (valorRelev.value == "Menor Preço") {
+      carrosExibidos.sort((a, b) => double.parse(a.preco.replaceAll('.', '').replaceAll(',', '')).compareTo(double.parse(b.preco.replaceAll('.', '').replaceAll(',', ''))));
+    } else if (valorRelev.value == "Maior Preço") {
+      carrosExibidos.sort((a, b) => double.parse(b.preco.replaceAll('.', '').replaceAll(',', '')).compareTo(double.parse(a.preco.replaceAll('.', '').replaceAll(',', ''))));
+    } else if (valorRelev.value == "Menor KM") {
+      carrosExibidos.sort((a, b) => int.parse(a.km.replaceAll('km', '').replaceAll('.', '').replaceAll(',', '')).compareTo(int.parse(b.km.replaceAll('km', '').replaceAll('.', '').replaceAll(',', ''))));
+    } else if (valorRelev.value == "Maior KM") {
+      carrosExibidos.sort((a, b) => int.parse(b.km.replaceAll('km', '').replaceAll('.', '').replaceAll(',', '')).compareTo(int.parse(a.km.replaceAll('km', '').replaceAll('.', '').replaceAll(',', ''))));
+    }
+
+    setState(() {});
   }
+
+
 
 
   final ScrollController controleDeFIltros = ScrollController();
@@ -220,7 +292,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                       ? carrosExibidos[index] 
                       : const Text("Nenhum veículo foi encontrado");
                   },
-                  separatorBuilder: (context, index) => SizedBox(height: 15), // Espaçamento entre os itens
+                  separatorBuilder: (context, index) => SizedBox(height: 15),
                   itemCount: carrosExibidos.length,
                 ),
                 alignment: Alignment.center,
@@ -387,7 +459,10 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                             return DropdownButton<String>(
                               hint: const Text("Quilometragem"),
                               value: (value.isEmpty) ? null : value,
-                              onChanged: (escolha) => valorKM.value = escolha.toString(),
+                              onChanged: (escolha) {
+                                valorKM.value = escolha.toString();
+                                atualizarLista(); 
+                              },
                               items: km.map((opcao) => DropdownMenuItem(
                                 value: opcao,
                                 child: Text(opcao),
@@ -468,7 +543,10 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                             return DropdownButton<String>(
                               hint: const Text("Preço"),
                               value: (value.isEmpty) ? null : value,
-                              onChanged: (escolha) => valorPreco.value = escolha.toString(),
+                              onChanged: (escolha) {
+                                valorPreco.value = escolha.toString();
+                                atualizarLista();
+                              },
                               items: preco.map((opcao) => DropdownMenuItem(
                                 value: opcao,
                                 child: Text(opcao),
@@ -504,7 +582,10 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                             return DropdownButton<String>(
                               hint: const Text("Relevancia"),
                               value: (value.isEmpty) ? null : value,
-                              onChanged: (escolha) => valorRelev.value = escolha.toString(),
+                              onChanged: (escolha) {
+                                valorRelev.value = escolha.toString();
+                                atualizarLista();
+                              },
                               items: relevancia.map((opcao) => DropdownMenuItem(
                                 value: opcao,
                                 child: Text(opcao),

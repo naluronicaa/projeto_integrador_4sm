@@ -95,15 +95,14 @@ class _CarroWidgetState extends State<CarroWidget> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //nome = Modelo + Marca
                 const SizedBox(height: 4),
                 Text(widget.modelo + ' ' + widget.marca, style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text(widget.preco, style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 30, 30, 30))),
+                Text('R\$ ' + widget.preco, style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
                 Text('FIPE:' + widget.fipe, style: const TextStyle(fontSize: 10, color: Color.fromARGB(130, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text(widget.cor + ' ' +  widget.carroceria + ' \n' + widget.condicao +  ' ' + widget.ano + ' ' + widget.km, style: TextStyle(fontSize: 8, color: Color.fromARGB(130, 30, 30, 30))),
+                Text(widget.cor + ' ' +  widget.carroceria + ' \n' + widget.condicao +  ' ' + widget.ano + ' ' + widget.km + ' km', style: TextStyle(fontSize: 8, color: Color.fromARGB(130, 30, 30, 30))),
               ],
             ),
 
@@ -173,7 +172,7 @@ class _CarroWidgetState extends State<CarroWidget> {
                 const SizedBox(height: 4),
                 Text(widget.modelo + ' ' + widget.marca, style: const TextStyle(fontSize: 17, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text(widget.preco, style: const TextStyle(fontSize: 17, color: Color.fromARGB(255, 30, 30, 30))),
+                Text('R\$ ' + widget.preco, style: const TextStyle(fontSize: 17, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
                 Text('FIPE:' + widget.fipe, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30)))
               ],
@@ -187,7 +186,7 @@ class _CarroWidgetState extends State<CarroWidget> {
                 const SizedBox(height: 4),
                 Text(widget.ano, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text(widget.km, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
+                Text(widget.km + ' km', style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
                 const SizedBox(height: 2),
                 Text(widget.localizacao, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30)))
               ],

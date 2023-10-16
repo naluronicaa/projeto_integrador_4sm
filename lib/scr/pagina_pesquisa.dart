@@ -226,21 +226,35 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
   }
 
   void filtrarCarros(String searchTerm) {
-  List<CarroWidget> carrosFiltrados = listaDeCarros.where((carro) {
-    bool modeloMatch = carro.modelo.toLowerCase().contains(searchTerm.toLowerCase());
-    bool marcaMatch = carro.marca.toLowerCase().contains(searchTerm.toLowerCase());
-    bool corMatch = carro.cor.toLowerCase().contains(searchTerm.toLowerCase());
-    bool anoMatch = carro.ano.toLowerCase().contains(searchTerm.toLowerCase());
-    bool condicaoMatch = carro.condicao.toLowerCase().contains(searchTerm.toLowerCase());
-    bool carroceriaMatch = carro.carroceria.toLowerCase().contains(searchTerm.toLowerCase());
+    List<String> termos = searchTerm.toLowerCase().split(' ');
 
-    return modeloMatch || marcaMatch || corMatch || anoMatch || condicaoMatch || carroceriaMatch;
-  }).toList();
+    List<CarroWidget> carrosFiltrados = listaDeCarros.where((carro) {
+      bool matchesAllTerms = true;
 
-  setState(() {
-    carrosExibidos = carrosFiltrados;
-  });
-}
+      for (var termo in termos) {
+        bool modeloMatch = carro.modelo.toLowerCase().contains(termo);
+        bool marcaMatch = carro.marca.toLowerCase().contains(termo);
+        bool corMatch = carro.cor.toLowerCase().contains(termo);
+        bool anoMatch = carro.ano.toLowerCase().contains(termo);
+        bool condicaoMatch = carro.condicao.toLowerCase().contains(termo);
+        bool carroceriaMatch = carro.carroceria.toLowerCase().contains(termo);
+
+        bool termoMatches = modeloMatch || marcaMatch || corMatch || anoMatch || condicaoMatch || carroceriaMatch;
+
+        if (!termoMatches) {
+          matchesAllTerms = false;
+          break;
+        }
+      }
+
+      return matchesAllTerms;
+    }).toList();
+
+    setState(() {
+      carrosExibidos = carrosFiltrados;
+    });
+  }
+
 
   final ScrollController controleDeFIltros = ScrollController();
   final ScrollController controleDeAnuncios = ScrollController();
@@ -301,18 +315,21 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
               bottom: 0,
               child: Container(
                 padding: const EdgeInsets.all(10.0),
-                child: ListView.separated(
-                  itemBuilder: (context, index) {
-                    return carrosExibidos.isNotEmpty 
-                      ? carrosExibidos[index] 
-                      : const Text("Nenhum veículo foi encontrado");
-                  },
-                  separatorBuilder: (context, index) => SizedBox(height: 15),
-                  itemCount: carrosExibidos.length,
-                ),
+                child: carrosExibidos.isNotEmpty
+                  ? ListView.separated(
+                    itemBuilder: (context, index) {
+                      return carrosExibidos[index];
+                    },
+                    separatorBuilder: (context, index) => SizedBox(height: 15),
+                    itemCount: carrosExibidos.length,
+                  )
+                  : Center(
+                      child: Text("Nenhum veículo foi encontrado"),
+                    ),
                 alignment: Alignment.center,
               ),
             ),
+
 
 
             Positioned(
@@ -335,7 +352,6 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                 child: TextField(
                   controller: searchController,
                   onSubmitted: (String value) {
-                    // Quando o usuário pressionar Enter, chame a função de filtragem
                     filtrarCarros(value);
                   },
                   decoration: InputDecoration(

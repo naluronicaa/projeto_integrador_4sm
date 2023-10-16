@@ -84,23 +84,23 @@ class _CarroWidgetState extends State<CarroWidget> {
               ),
               child: Image.asset(
                 'assets/car_default.png',
-                width: 100,
-                height: 100,
+                width: 40,
+                height: 115,
                 fit: BoxFit.cover,
               ),
             ),
 
-            const SizedBox(width: 20),
+            const SizedBox(width: 5),
 
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 4),
-                Text(widget.modelo + ' ' + widget.marca, style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 30, 30, 30))),
+                Text(widget.modelo + ' ' + widget.marca, style: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
                 Text('R\$ ' + widget.preco, style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text('FIPE:' + widget.fipe, style: const TextStyle(fontSize: 10, color: Color.fromARGB(130, 30, 30, 30))),
+                Text('FIPE ' + widget.fipe, style: const TextStyle(fontSize: 10, color: Color.fromARGB(130, 30, 30, 30))),
                 const SizedBox(height: 2),
                 Text(widget.cor + ' ' +  widget.carroceria + ' \n' + widget.condicao +  ' ' + widget.ano + ' ' + widget.km + ' km', style: TextStyle(fontSize: 8, color: Color.fromARGB(130, 30, 30, 30))),
               ],
@@ -174,7 +174,7 @@ class _CarroWidgetState extends State<CarroWidget> {
                 const SizedBox(height: 2),
                 Text('R\$ ' + widget.preco, style: const TextStyle(fontSize: 17, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text('FIPE:' + widget.fipe, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30)))
+                Text('FIPE ' + widget.fipe, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30)))
               ],
             ),
 

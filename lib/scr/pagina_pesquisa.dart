@@ -48,6 +48,8 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
   final valorRelev = ValueNotifier('');
   final valorLoca = ValueNotifier('');
 
+  final TextEditingController searchController = TextEditingController();
+
   //exemplo de carros sem puxar do banco pq eu preciso testar essa bagaça
   List<CarroWidget> listaDeCarros = [
     //exemplos, trocar depois pela conexão com o Banco de Dados
@@ -223,8 +225,22 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
     setState(() {});
   }
 
+  void filtrarCarros(String searchTerm) {
+  List<CarroWidget> carrosFiltrados = listaDeCarros.where((carro) {
+    bool modeloMatch = carro.modelo.toLowerCase().contains(searchTerm.toLowerCase());
+    bool marcaMatch = carro.marca.toLowerCase().contains(searchTerm.toLowerCase());
+    bool corMatch = carro.cor.toLowerCase().contains(searchTerm.toLowerCase());
+    bool anoMatch = carro.ano.toLowerCase().contains(searchTerm.toLowerCase());
+    bool condicaoMatch = carro.condicao.toLowerCase().contains(searchTerm.toLowerCase());
+    bool carroceriaMatch = carro.carroceria.toLowerCase().contains(searchTerm.toLowerCase());
 
+    return modeloMatch || marcaMatch || corMatch || anoMatch || condicaoMatch || carroceriaMatch;
+  }).toList();
 
+  setState(() {
+    carrosExibidos = carrosFiltrados;
+  });
+}
 
   final ScrollController controleDeFIltros = ScrollController();
   final ScrollController controleDeAnuncios = ScrollController();
@@ -236,7 +252,6 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
         atualizarLista();
       });
     }
-
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -317,18 +332,23 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
               child: Container(
                 padding: const EdgeInsets.all(30.0),
                 color: const Color.fromARGB(150, 135, 157, 168),
-                child: const TextField(
+                child: TextField(
+                  controller: searchController,
+                  onSubmitted: (String value) {
+                    // Quando o usuário pressionar Enter, chame a função de filtragem
+                    filtrarCarros(value);
+                  },
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
                     hintText: 'Busque seu carro aqui',
                     prefixIcon: Icon(Icons.search),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))
-                    )
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
                   ),
-                )
-              ), 
+                ),
+              ),
             ),
             
             //filtros
@@ -548,24 +568,6 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                                 atualizarLista();
                               },
                               items: preco.map((opcao) => DropdownMenuItem(
-                                value: opcao,
-                                child: Text(opcao),
-                              )).toList(),
-                            );
-                          })
-                        
-                      ),
-
-                    //filtro localização
-                    Container(
-                        padding: const EdgeInsets.all(3.0),
-                        child: ValueListenableBuilder(
-                          valueListenable: valorLoca, builder: (BuildContext constext, String value, _){
-                            return DropdownButton<String>(
-                              hint: const Text("Localização"),
-                              value: (value.isEmpty) ? null : value,
-                              onChanged: (escolha) => valorLoca.value = escolha.toString(),
-                              items: loca.map((opcao) => DropdownMenuItem(
                                 value: opcao,
                                 child: Text(opcao),
                               )).toList(),

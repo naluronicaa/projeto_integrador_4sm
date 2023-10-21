@@ -1,36 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class CarroWidget extends StatefulWidget {
   final String marca;
   final String modelo;
   final String cor;
-  final String ano;
-  final String preco;
-  final String km;
+  final int ano;
+  final double km;
   final String localizacao;
   final String carroceria;
   final String condicao;
   final String fipe;
-  final String site; 
+  final String site;
+  final String precoM;
 
 
-  CarroWidget(
-    {
+  CarroWidget({
     required this.marca,
     required this.modelo,
     required this.cor,
     required this.ano,
-    required this.preco,
     required this.km,
     required this.localizacao,
     required this.carroceria,
     required this.condicao,
     required this.fipe,
     required this.site,
+    required this.precoM,
+});
+
+  factory CarroWidget.fromJson(Map<String, dynamic> json) {
+    return CarroWidget(
+      marca: json['marca'],
+      modelo: json['modelo'],
+      cor: json['cor'],
+      ano: json['ano'],
+      km: json['km'], // Convertendo para double
+      localizacao: json['localizacao'],
+      carroceria: json['carroceria'],
+      condicao: json['condicao'],
+      fipe: json['tabelaFipe'],
+      site: json['site'],
+      precoM: json['precoM'],
+    );
   }
-);
 
   @override
   _CarroWidgetState createState() => _CarroWidgetState();
@@ -98,11 +111,11 @@ class _CarroWidgetState extends State<CarroWidget> {
                 const SizedBox(height: 4),
                 Text(widget.modelo + ' ' + widget.marca, style: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text('R\$ ' + widget.preco, style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 30, 30, 30))),
+                Text(widget.precoM, style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
                 Text('FIPE ' + widget.fipe, style: const TextStyle(fontSize: 10, color: Color.fromARGB(130, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text(widget.cor + ' ' +  widget.carroceria + ' \n' + widget.condicao +  ' ' + widget.ano + ' ' + widget.km + ' km', style: TextStyle(fontSize: 8, color: Color.fromARGB(130, 30, 30, 30))),
+                Text(widget.cor + ' ' +  widget.carroceria + ' \n' + widget.condicao +  ' ' + widget.ano.toString() + ' ' + widget.km.toString() + ' km', style: TextStyle(fontSize: 8, color: Color.fromARGB(130, 30, 30, 30))),
               ],
             ),
 
@@ -172,7 +185,7 @@ class _CarroWidgetState extends State<CarroWidget> {
                 const SizedBox(height: 4),
                 Text(widget.modelo + ' ' + widget.marca, style: const TextStyle(fontSize: 17, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text('R\$ ' + widget.preco, style: const TextStyle(fontSize: 17, color: Color.fromARGB(255, 30, 30, 30))),
+                Text(widget.precoM, style: const TextStyle(fontSize: 17, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
                 Text('FIPE ' + widget.fipe, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30)))
               ],
@@ -184,9 +197,9 @@ class _CarroWidgetState extends State<CarroWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 4),
-                Text(widget.ano, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
+                Text(widget.ano.toString(), style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text(widget.km + ' km', style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
+                Text(widget.km.toString() + ' km', style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30))),
                 const SizedBox(height: 2),
                 Text(widget.localizacao, style: const TextStyle(fontSize: 15, color: Color.fromARGB(130, 30, 30, 30)))
               ],

@@ -3,6 +3,9 @@ import 'package:pi4sm/scr/navbar.dart';
 import 'package:pi4sm/scr/ofertas.dart';
 import 'package:pi4sm/scr/pagina_usuario.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class PaginaPrincipal extends StatefulWidget {
   const PaginaPrincipal({super.key});
   @override
@@ -12,7 +15,15 @@ class PaginaPrincipal extends StatefulWidget {
 class PaginaPrincipalState extends State<PaginaPrincipal> {
   List<String> marca = ["Renault", "Fiat", "Toyota", "Ford", "Chevrolet", "Honda", "Hyundai", "Mitsubishi", "Volkswagen", "Outra"];
   List<String> ano = ["abaixo de 2000","2000 - 2005", "2005 - 2010", "2010 - 2020", "acima de 2020"];
-  
+
+  Map<String, Map<String, int>> intervalosAno = {
+    "abaixo de 2000": {"min": 0, "max": 2000},
+    "2000 - 2005": {"min": 2000, "max": 2005},
+    "2005 - 2010": {"min": 2005, "max": 2010},
+    "2010 - 2020": {"min": 2010, "max": 2020},
+    "acima de 2020": {"min": 2020, "max": 2050},
+  };
+
   Map<String, List<String>> modelosPorMarca = {
   "Renault":["Kwid", "Stepway", "Logan",  "Captur", "Duster", "Oroch", "Sandero", "Outro"],
   "Fiat": ["Uno", "Mobi", "Argo", " Toro", "Strada", "Palio", "Siena", "Cronos", "Outro"],
@@ -26,14 +37,74 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
   'Outra' : ['Outros']
   };
 
-  List<String> km = ["abaixo 10000", "10000 - 20000", "20000 - 30000", "50000 - 60000", "acima de 60000"];
+  List<String> km = ["abaixo 10.000", "10.000 - 20.000", "20.000 - 30.000", "50.000 - 60.000", "acima de 60.000"];
+  Map<String, Map<String, double>> intervalosKM = {
+    "abaixo 10.000": {"min": 0, "max": 10.000},
+    "10.000 - 20.000": {"min": 10.000, "max": 20.000},
+    "20.000 - 30.000": {"min": 20.000, "max": 30.000},
+    "50.000 - 60.000": {"min": 50.000, "max": 60.000},
+    "acima de 60.000": {"min": 60.000, "max": 10000000},
+  };
+
   List<String> carroceria = ["Buggy", "Conversível", "Cupê", "Hatchback", "Sedan", "Minivan", "Perua", "Picape", "Esportivo", "Van", "Outra"];
   List<String> cor = ["Preto", "Prata", "Branco", "Vermelho", "Marrom", "Azul", "Amarelo", "Outra"];
   List<String> novoounao = ["Novo", "Seminovo","Usado"];
-  List<String> preco = ["Abaixo de 10000.00", "10000.00 - 20000.00", "20000.00 - 30000.00", "30000.00 - 40000.00", "40000.00 - 50000.00", "50000.00 - 60000.00", "60000.00 - 70000.00", "70000.00 - 80000.00", "80000.00 - 90000.00", "Acima de 90000.00"];
+  List<String> preco = ["abaixo de 10000", "10000 - 20000", "20000 - 30000", "30000 - 40000",
+   "40000 - 50000", "50000 - 60000", "60000 - 70000", "70000 - 80000", "80000 - 90000", "acima de 90000"];
 
-  List<String> loca = ["Próximo a mim", "Qualquer lugar"];
+  Map<String, Map<String, int>> intervalosPreco = {
+    "abaixo de 10000": {"min": 0, "max": 10000},
+    "10000 - 20000": {"min": 10000, "max": 20000},
+    "20000 - 30000": {"min": 20000, "max": 30000},
+    "30000 - 40000": {"min": 30000, "max": 40000},
+    "40000 - 50000": {"min": 40000, "max": 50000},
+    "50000 - 60000": {"min": 50000, "max": 60000},
+    "60000 - 70000": {"min": 60000, "max": 70000},
+    "70000 - 80000": {"min": 70000, "max": 80000},
+    "80000 - 90000": {"min": 80000, "max": 90000},
+    "acima de 90000": {"min": 90000, "max": 10000000},
+  };
+
+
   List<String> relevancia =["Maior Preço", "Menor Preço", "Maior KM", "Menor KM"];
+
+  List<String> localF = ['AC - Acre', 'AL - Alagoas', 'AP - Amapá', 'AM - Amazonas', 'BA - Bahia', 'CE - Ceará', 'DF - Distrito Federal', 'ES - Espírito Santo', 'GO - Goiás', 'MA - Maranhão', 'MT - Mato Grosso', 'MS - Mato Grosso do Sul', 'MG - Minas Gerais', 'PA - Pará', 'PB - Paraíba', 'PR - Paraná', 'PE - Pernambuco', 'PI - Piauí', 'RJ - Rio de Janeiro', 'RN - Rio Grande do Norte', 'RS - Rio Grande do Sul', 'RO - Rondônia', 'RR - Roraima', 'SC - Santa Catarina', 'SP - São Paulo', 'SE - Sergipe', 'TO - Tocantins'];
+
+
+  Map<String, String> filtros = {};
+  Map<String, dynamic> filtrosIntervalos = {};
+
+  void atualizarFiltro(String nome, String valor) {
+    setState(() {
+      filtros[nome] = valor;
+    });
+  }
+
+  void atualizarFiltroIntervalos(String nome, dynamic valor1, dynamic valor2) {
+    setState(() {
+      filtrosIntervalos[nome] = {'min': valor1, 'max': valor2};
+    });
+  }
+
+  void refreshFiltros() {
+    setState(() {
+      valorMarca.value = '';
+      valorModelo.value = '';
+      valorAno.value = '';
+      valorKM.value = '';
+      valorCarroceria.value = '';
+      valorCor.value = '';
+      valorNov.value = '';
+      valorPreco.value = '';
+      valorRelev.value = '';
+      valorLocal.value = '';
+      termo.value = '';
+      filtros.clear();
+      filtrosIntervalos.clear();
+    });
+
+    fetchCarros(termo.value, filtros, filtrosIntervalos, valorRelev.value);
+  }
 
 
   final valorMarca = ValueNotifier('');
@@ -46,232 +117,33 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
   final valorPreco = ValueNotifier('');
   final valorTabelaFIP = ValueNotifier('');
   final valorRelev = ValueNotifier('');
-  final valorLoca = ValueNotifier('');
+  final valorLocal = ValueNotifier('');
+  final termo = ValueNotifier('');
 
   final TextEditingController searchController = TextEditingController();
-
-  //exemplo de carros sem puxar do banco pq eu preciso testar essa bagaça
-  List<CarroWidget> listaDeCarros = [
-    //exemplos, trocar depois pela conexão com o Banco de Dados
-                  CarroWidget(
-                    marca: 'Ford',
-                    modelo: 'Fiesta',
-                    cor: 'Preto',
-                    ano: '2019',
-                    preco: '35000.00',
-                    km: '30.000',
-                    localizacao: 'São Paulo - SP',
-                    carroceria: 'Hatchback',
-                    condicao: 'Usado',
-                    fipe: 'R\$37.000,00',
-                    site: 'https://www.webmotors.com.br/carros/estoque?lkid=1022',
-                  ),
-
-                  CarroWidget(
-                    marca: 'Chevrolet',
-                    modelo: 'Onix',
-                    cor: 'Branco',
-                    ano: '2020',
-                    preco: '40000.00',
-                    km: '25.000',
-                    localizacao: 'Rio de Janeiro - RJ',
-                    carroceria: 'Sedan',
-                    condicao: 'Seminovo',
-                    fipe: 'R\$42.000,00',
-                    site: 'https://www.olx.com.br/',
-                  ),
-
-                  CarroWidget(
-                    marca: 'Volkswagen',
-                    modelo: 'Golf',
-                    cor: 'Azul',
-                    ano: '2018',
-                    preco: '45000.00',
-                    km: '35.000',
-                    localizacao: 'Belo Horizonte - MG',
-                    carroceria: 'Hatchback',
-                    condicao: 'Usado',
-                    fipe: 'R\$47.000,00',
-                    site: 'https://www.icarros.com.br/',
-                  ),
-
-                  CarroWidget(
-                    marca: 'Toyota',
-                    modelo: 'Corolla',
-                    cor: 'Prata',
-                    ano: '2021',
-                    preco: '60000.00',
-                    km: '10.000',
-                    localizacao: 'Curitiba - PR',
-                    carroceria: 'Sedan',
-                    condicao: 'Novo',
-                    fipe: 'R\$65.000,00',
-                    site: 'https://www.webmotors.com.br/carros/estoque?lkid=1022',
-                  ),
-
-                  CarroWidget(
-                    marca: 'Honda',
-                    modelo: 'Civic',
-                    cor: 'Cinza',
-                    ano: '2017',
-                    preco: '38000.00',
-                    km: '40.000',
-                    localizacao: 'Porto Alegre - RS',
-                    carroceria: 'Sedan',
-                    condicao: 'Usado',
-                    fipe: 'R\$40.000,00',
-                    site: 'https://www.olx.com.br/',
-                  ),
-
-                  CarroWidget(
-                    marca: 'Hyundai',
-                    modelo: 'HB20',
-                    cor: 'Vermelho',
-                    ano: '2019',
-                    preco: '36000.00',
-                    km: '20.000',
-                    localizacao: 'Salvador - BA',
-                    carroceria: 'Hatchback',
-                    condicao: 'Seminovo',
-                    fipe: 'R\$38.000,00',
-                    site: 'https://www.icarros.com.br/',
-                  ),
-
-  ];
-
-  List<CarroWidget> carrosExibidos = [];
-
-  bool anoFiltrado(String anoCarro, String filtro) {
-    if (filtro == "abaixo de 2000") {
-      return int.parse(anoCarro) < 2000;
-    } else if (filtro == "acima de 2020") {
-      return int.parse(anoCarro) > 2020;
-    } else {
-      List<String> intervalo = filtro.split(" - ");
-      int anoMin = int.parse(intervalo[0]);
-      int anoMax = int.parse(intervalo[1]);
-      int anoCarroInt = int.parse(anoCarro);
-
-      return anoCarroInt >= anoMin && anoCarroInt <= anoMax;
-    }
-  }
-
-  bool quilometragemFiltrada(String kmCarro, String filtro) {
-    if (filtro.contains('abaixo')) {
-      int valorMax = int.parse(filtro.replaceAll('abaixo ', '').replaceAll('.', '').replaceAll(',', '').replaceAll(' ', ''));
-      int kmCarroInt = int.parse(kmCarro.replaceAll('km', '').replaceAll('.', '').replaceAll(',', '').replaceAll(' ', ''));
-      return kmCarroInt < valorMax;
-    } else if (filtro.contains('acima')) {
-      int valorMin = int.parse(filtro.replaceAll('acima de ', '').replaceAll('.', '').replaceAll(',', '').replaceAll(' ', ''));
-      int kmCarroInt = int.parse(kmCarro.replaceAll('km', '').replaceAll('.', '').replaceAll(',', '').replaceAll(' ', ''));
-      return kmCarroInt > valorMin;
-    } else {
-      List<String> intervalo = filtro.split(" - ");
-      int kmMin = int.parse(intervalo[0].replaceAll('km', '').replaceAll('.', '').replaceAll(',', '').replaceAll(' ', ''));
-      int kmMax = int.parse(intervalo[1].replaceAll('km', '').replaceAll('.', '').replaceAll(',', '').replaceAll(' ', ''));
-      int kmCarroInt = int.parse(kmCarro.replaceAll('km', '').replaceAll('.', '').replaceAll(',', '').replaceAll(' ', ''));
-
-      return kmCarroInt >= kmMin && kmCarroInt <= kmMax;
-    }
-  }
-
-  double converterPreco(String precoCarro) {
-    return double.parse(precoCarro.replaceAll('.', '').replaceAll(',', '.'));
-  }
-
-
-  bool precoFiltrado(String precoCarro, String filtro) {
-    double precoCarroDouble = converterPreco(precoCarro);
-
-    if (filtro.startsWith('Abaixo de')) {
-      double valorMax = converterPreco(filtro.substring(10));
-      return precoCarroDouble <= valorMax;
-    } else if (filtro.startsWith('Acima de')) {
-      double valorMin = converterPreco(filtro.substring(9));
-      return precoCarroDouble >= valorMin;
-    } else {
-      List<String> intervalo = filtro.split(" - ");
-      double precoMin = converterPreco(intervalo[0]);
-      double precoMax = converterPreco(intervalo[1]);
-
-      return precoCarroDouble >= precoMin && precoCarroDouble <= precoMax;
-    }
-  }
-
-  void atualizarLista() {
-    carrosExibidos = listaDeCarros.where((carro) {
-      bool marcaFiltrada = valorMarca.value.isEmpty || valorMarca.value == carro.marca;
-      bool modeloFiltrado = valorModelo.value.isEmpty || valorModelo.value == carro.modelo;
-      bool carroceriaFiltrada = valorCarroceria.value.isEmpty || valorCarroceria.value == carro.carroceria;
-      bool corFiltrada = valorCor.value.isEmpty || valorCor.value == carro.cor;
-      bool condicaoFiltrada = valorNov.value.isEmpty || valorNov.value == carro.condicao;
-      bool anoPassaFiltro = valorAno.value.isEmpty || anoFiltrado(carro.ano, valorAno.value);
-      bool kmPassaFiltro = valorKM.value.isEmpty || quilometragemFiltrada(carro.km, valorKM.value);
-      bool precoPassaFiltro = valorPreco.value.isEmpty || precoFiltrado(carro.preco, valorPreco.value);
-
-      return marcaFiltrada && modeloFiltrado && carroceriaFiltrada && corFiltrada && condicaoFiltrada && anoPassaFiltro && kmPassaFiltro && precoPassaFiltro;
-    }).toList();
-
-    if (valorRelev.value == "Menor Preço") {
-      carrosExibidos.sort((a, b) => double.parse(a.preco.replaceAll('.', '').replaceAll(',', '')).compareTo(double.parse(b.preco.replaceAll('.', '').replaceAll(',', ''))));
-    } else if (valorRelev.value == "Maior Preço") {
-      carrosExibidos.sort((a, b) => double.parse(b.preco.replaceAll('.', '').replaceAll(',', '')).compareTo(double.parse(a.preco.replaceAll('.', '').replaceAll(',', ''))));
-    } else if (valorRelev.value == "Menor KM") {
-      carrosExibidos.sort((a, b) => int.parse(a.km.replaceAll('km', '').replaceAll('.', '').replaceAll(',', '')).compareTo(int.parse(b.km.replaceAll('km', '').replaceAll('.', '').replaceAll(',', ''))));
-    } else if (valorRelev.value == "Maior KM") {
-      carrosExibidos.sort((a, b) => int.parse(b.km.replaceAll('km', '').replaceAll('.', '').replaceAll(',', '')).compareTo(int.parse(a.km.replaceAll('km', '').replaceAll('.', '').replaceAll(',', ''))));
-    }
-
-    setState(() {});
-  }
-
-  void filtrarCarros(String searchTerm) {
-    List<String> termos = searchTerm.toLowerCase().split(' ');
-
-    List<CarroWidget> carrosFiltrados = listaDeCarros.where((carro) {
-      bool matchesAllTerms = true;
-
-      for (var termo in termos) {
-        bool modeloMatch = carro.modelo.toLowerCase().contains(termo);
-        bool marcaMatch = carro.marca.toLowerCase().contains(termo);
-        bool corMatch = carro.cor.toLowerCase().contains(termo);
-        bool anoMatch = carro.ano.toLowerCase().contains(termo);
-        bool condicaoMatch = carro.condicao.toLowerCase().contains(termo);
-        bool carroceriaMatch = carro.carroceria.toLowerCase().contains(termo);
-
-        bool termoMatches = modeloMatch || marcaMatch || corMatch || anoMatch || condicaoMatch || carroceriaMatch;
-
-        if (!termoMatches) {
-          matchesAllTerms = false;
-          break;
-        }
-      }
-
-      return matchesAllTerms;
-    }).toList();
-
-    setState(() {
-      carrosExibidos = carrosFiltrados;
-    });
-  }
-
-
   final ScrollController controleDeFIltros = ScrollController();
   final ScrollController controleDeAnuncios = ScrollController();
 
-  @override
-    void initState() {
-      super.initState();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        atualizarLista();
-      });
-    }
+  Future<List<CarroWidget>> fetchCarros(String termo, filtros, filtrosIntervalos, relev) async {
+    var url = Uri.parse("http://localhost:3001/carrosFiltrados?termo=$termo&filtros=${jsonEncode(filtros)}&filtrosIntervalos=${jsonEncode(filtrosIntervalos)}&relevancia=$relev");
+    var response = await http.get(url);
 
+    if (response.statusCode == 200) {
+      List<dynamic> jsonList = json.decode(response.body);
+      List<CarroWidget> carros = jsonList.map((json) => CarroWidget.fromJson(json)).toList();
+      return carros;
+    } else {
+      throw Exception('Falha ao carregar carros');
+    }
+  }
+
+
+  
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       drawer: NavBar(),
-
       //cabeçalho
        appBar: AppBar(
         title: const Text('Olá!', style: TextStyle(fontSize: 15, color : Colors.white)),
@@ -308,27 +180,36 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
         child : Stack(
           children: [
             //exibição dos produtos
-            Positioned(
-              top: 180,
-              left: 25,
-              right: 25,
-              bottom: 0,
-              child: Container(
-                padding: const EdgeInsets.all(10.0),
-                child: carrosExibidos.isNotEmpty
-                  ? ListView.separated(
-                    itemBuilder: (context, index) {
-                      return carrosExibidos[index];
-                    },
-                    separatorBuilder: (context, index) => SizedBox(height: 15),
-                    itemCount: carrosExibidos.length,
-                  )
-                  : Center(
-                      child: Text("Nenhum veículo foi encontrado"),
-                    ),
-                alignment: Alignment.center,
+           Positioned(
+            top: 180,
+            left: 25,
+            right: 25,
+            bottom: 0,
+            child: Container(
+              padding: const EdgeInsets.all(10.0),
+              alignment: Alignment.center,
+              child: FutureBuilder<List<CarroWidget>>(
+                future: fetchCarros(termo.value, filtros, filtrosIntervalos, valorRelev.value),
+                builder: (BuildContext context, AsyncSnapshot<List<CarroWidget>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator(); 
+                  } else if (snapshot.hasError) {
+                    return Text('Erro ao carregar carros: ${snapshot.error}');
+                  } else {
+                    List<CarroWidget> carros = snapshot.data!;
+                    return ListView.separated(
+                      itemCount: carros.length,
+                      separatorBuilder: (BuildContext context, int index) => SizedBox(height: 15),
+                      itemBuilder: (BuildContext context, int index) {
+                        return carros[index]; 
+                      },
+                    );
+                  }
+                },
               ),
             ),
+          ),
+
 
 
 
@@ -352,7 +233,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                 child: TextField(
                   controller: searchController,
                   onSubmitted: (String value) {
-                    filtrarCarros(value);
+                    termo.value = value.toString();
                   },
                   decoration: InputDecoration(
                     filled: true,
@@ -394,26 +275,17 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                   child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    //resetar filtros
                     Tooltip(
                       message: 'Resetar Filtros',
                       child: IconButton(
                       onPressed: () {
-                        valorMarca.value = '';
-                        valorModelo.value = '';
-                        valorAno.value = '';
-                        valorKM.value = '';
-                        valorCarroceria.value = '';
-                        valorCor.value = '';
-                        valorNov.value = '';
-                        valorPreco.value = '';
-                        valorRelev.value = '';
-                        valorLoca.value = '';
-
-                        atualizarLista();
-                        
+                        //refreshFiltros();
+                        print(valorRelev.value);
                       }, 
                     icon: const Icon(Icons.loop_outlined)),
                     ),
+
 
                     //filtro marca
                     Container(
@@ -426,7 +298,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               onChanged: (escolha) {
                                 valorModelo.value = '';
                                 valorMarca.value = escolha.toString();
-                                atualizarLista();
+                                atualizarFiltro("marca", escolha.toString());
                               },
                               items: marca.map((opcao) => DropdownMenuItem(
                                 value: opcao,
@@ -448,7 +320,11 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               value: (value.isEmpty) ? null : value,
                               onChanged: (escolha) {
                                 valorAno.value = escolha.toString();
-                                atualizarLista();
+                                
+                                int? minAno = intervalosAno[escolha]!["min"];
+                                int? maxAno = intervalosAno[escolha]!["max"];
+
+                                atualizarFiltroIntervalos("ano", minAno, maxAno);
                               },
                               items: ano.map((opcao) => DropdownMenuItem(
                                 value: opcao,
@@ -474,7 +350,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                             value: (valorModelo.value.isEmpty) ? null : valorModelo.value,
                             onChanged: (escolha) {
                               valorModelo.value = escolha.toString();
-                              atualizarLista();
+                              atualizarFiltro('modelo', escolha.toString());
                             },
                             
                             items: modelos.map((opcao) => DropdownMenuItem(
@@ -497,7 +373,10 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               value: (value.isEmpty) ? null : value,
                               onChanged: (escolha) {
                                 valorKM.value = escolha.toString();
-                                atualizarLista(); 
+                                double? minKM = intervalosKM[escolha]!["min"];
+                                double? maxKM = intervalosKM[escolha]!["max"];
+
+                                atualizarFiltroIntervalos('km', minKM, maxKM);
                               },
                               items: km.map((opcao) => DropdownMenuItem(
                                 value: opcao,
@@ -505,7 +384,6 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               )).toList(),
                             );
                           })
-                        
                       ),
 
                     //filtro Carroceria
@@ -518,7 +396,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               value: (value.isEmpty) ? null : value,
                               onChanged: (escolha) {
                                 valorCarroceria.value = escolha.toString();
-                                atualizarLista();
+                                atualizarFiltro('carroceria', escolha.toString());
                               },
                               items: carroceria.map((opcao) => DropdownMenuItem(
                                 value: opcao,
@@ -526,7 +404,6 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               )).toList(),
                             );
                           })
-                        
                       ),
 
                     //filtro cor
@@ -539,7 +416,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               value: (value.isEmpty) ? null : value,
                               onChanged: (escolha) {
                                 valorCor.value = escolha.toString();
-                                atualizarLista();
+                                atualizarFiltro('cor', escolha.toString());
                               },
                               items: cor.map((opcao) => DropdownMenuItem(
                                 value: opcao,
@@ -547,10 +424,9 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               )).toList(),
                             );
                           })
-                        
                       ),
 
-                     //filtro novo ou não
+                     //filtro condição
                     Container(
                         padding: const EdgeInsets.all(3.0),
                         child: ValueListenableBuilder(
@@ -560,7 +436,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               value: (value.isEmpty) ? null : value,
                               onChanged: (escolha) {
                                 valorNov.value = escolha.toString();
-                                atualizarLista();
+                                atualizarFiltro('condicao', escolha.toString());
                               },
                               items: novoounao.map((opcao) => DropdownMenuItem(
                                 value: opcao,
@@ -581,7 +457,11 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               value: (value.isEmpty) ? null : value,
                               onChanged: (escolha) {
                                 valorPreco.value = escolha.toString();
-                                atualizarLista();
+
+                                int? minP = intervalosPreco[escolha]!["min"];
+                                int? maxP = intervalosPreco[escolha]!["max"];
+
+                                atualizarFiltroIntervalos("preco", minP, maxP);
                               },
                               items: preco.map((opcao) => DropdownMenuItem(
                                 value: opcao,
@@ -589,7 +469,26 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               )).toList(),
                             );
                           })
-                        
+                    ),
+
+                    //filtro localização
+                    Container(
+                        padding: const EdgeInsets.all(3.0),
+                        child: ValueListenableBuilder(
+                          valueListenable: valorLocal, builder: (BuildContext constext, String value, _){
+                            return DropdownButton<String>(
+                              hint: const Text("Localização"),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) {
+                                valorLocal.value = escolha.toString();
+                                atualizarFiltro('localizacaoM', escolha.toString().substring(0,2));
+                              },
+                              items: localF.map((opcao) => DropdownMenuItem(
+                                value: opcao,
+                                child: Text(opcao),
+                              )).toList(),
+                            );
+                          })
                       ),
 
                     //filtro relevancia
@@ -602,7 +501,6 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               value: (value.isEmpty) ? null : value,
                               onChanged: (escolha) {
                                 valorRelev.value = escolha.toString();
-                                atualizarLista();
                               },
                               items: relevancia.map((opcao) => DropdownMenuItem(
                                 value: opcao,
@@ -610,18 +508,13 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               )).toList(),
                             );
                           })
-                        
                       ),
-
                   ],
                 )
                 )                 
               ),
             )
             ),
-          
-            
-
           ],
         ),
       )

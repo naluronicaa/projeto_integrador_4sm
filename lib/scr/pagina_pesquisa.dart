@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pi4sm/scr/navbar.dart';
 import 'package:pi4sm/scr/ofertas.dart';
 import 'package:pi4sm/scr/pagina_usuario.dart';
-
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -27,14 +26,14 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
   Map<String, List<String>> modelosPorMarca = {
   "Renault":["Kwid", "Stepway", "Logan",  "Captur", "Duster", "Oroch", "Sandero", "Outro"],
   "Fiat": ["Uno", "Mobi", "Argo", " Toro", "Strada", "Palio", "Siena", "Cronos", "Outro"],
-  'Toyota' : ["Corolla", "Hilux", "Etios", "Yaris", "RAV4", "SW4", "Prius", "Sequoia", "Outro"],
-  'Ford' : ["Ka", "Fiesta", "Focus", "EcoSport", "Fusion", "Ranger", "Edge", "Mustang", "Outro"],
-  'Chevrolet' : ["Onix", "Prisma", "Cobalt", "Corsa", "Tracker", "Cruze", "Equinox", "S10", "Outro"],
-  'Honda' : ["Civic", "Fit", "HR-V", 'City', 'CR-V','WR-V','Accord', 'Insight', 'Outro'],
-  'Hyundai' :  ['HB20', 'Creta', 'Tucson', 'Santa Fe', 'ix35', 'Veloster', 'Elantra', 'Outro'],
-  'Mitsubishi' : ['Lancer', 'ASX', 'Outlander', 'Pajero', 'Eclipse Cross', 'Outro'],
-  'Volkswagen' : ['Gol', 'Polo', 'Virtus', 'Jetta', 'Voyage', 'Fox', 'Golf', 'Saveiro', 'Amarok', 'Outro'],
-  'Outra' : ['Outros']
+  "Toyota" : ["Corolla", "Hilux", "Etios", "Yaris", "RAV4", "SW4", "Prius", "Sequoia", "Outro"],
+  "Ford" : ["Ka", "Fiesta", "Focus", "EcoSport", "Fusion", "Ranger", "Edge", "Mustang", "Outro"],
+  "Chevrolet" : ["Onix", "Prisma", "Cobalt", "Corsa", "Tracker", "Cruze", "Equinox", "S10", "Outro"],
+  "Honda" : ["Civic", "Fit", "HR-V", "City", "CR-V","WR-V","Accord", "Insight", "Outro"],
+  "Hyundai" :  ["HB20", "Creta", "Tucson", "Santa Fe", "ix35", "Veloster", "Elantra", "Outro"],
+  "Mitsubishi" : ["Lancer", "ASX", "Outlander", "Pajero", "Eclipse Cross", "Outro"],
+  "Volkswagen" : ["Gol", "Polo", "Virtus", "Jetta", "Voyage", "Fox", "Golf", "Saveiro", "Amarok", "Outro"],
+  "Outra" : ["Outros"]
   };
 
   List<String> km = ["abaixo 10.000", "10.000 - 20.000", "20.000 - 30.000", "50.000 - 60.000", "acima de 60.000"];
@@ -126,14 +125,27 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
 
   Future<List<CarroWidget>> fetchCarros(String termo, filtros, filtrosIntervalos, relev) async {
     var url = Uri.parse("http://localhost:3001/carrosFiltrados?termo=$termo&filtros=${jsonEncode(filtros)}&filtrosIntervalos=${jsonEncode(filtrosIntervalos)}&relevancia=$relev");
-    var response = await http.get(url);
+    try {
+      var response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      List<dynamic> jsonList = json.decode(response.body);
-      List<CarroWidget> carros = jsonList.map((json) => CarroWidget.fromJson(json)).toList();
-      return carros;
-    } else {
-      throw Exception('Falha ao carregar carros');
+      if (response.statusCode == 200) {
+        List<dynamic> jsonList = json.decode(response.body);
+        List<CarroWidget> carros = jsonList.map((json) => CarroWidget.fromJson(json)).toList();
+        return carros;
+      } else {
+        throw Exception('Falha ao carregar carros');
+      }
+    } catch (error){
+      var url = Uri.parse("http://10.2.130.76:3001/carrosFiltrados?termo=$termo&filtros=${jsonEncode(filtros)}&filtrosIntervalos=${jsonEncode(filtrosIntervalos)}&relevancia=$relev");
+      var response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        List<dynamic> jsonList = json.decode(response.body);
+        List<CarroWidget> carros = jsonList.map((json) => CarroWidget.fromJson(json)).toList();
+        return carros;
+      } else {
+        throw Exception('Falha ao carregar carros');
+      }
     }
   }
 
@@ -195,11 +207,13 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                     return const CircularProgressIndicator(); 
                   } else if (snapshot.hasError) {
                     return Text('Erro ao carregar carros: ${snapshot.error}');
+                  } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                    return const Text('Nenhum carro foi encontrado 😟');
                   } else {
                     List<CarroWidget> carros = snapshot.data!;
                     return ListView.separated(
                       itemCount: carros.length,
-                      separatorBuilder: (BuildContext context, int index) => SizedBox(height: 15),
+                      separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 15),
                       itemBuilder: (BuildContext context, int index) {
                         return carros[index]; 
                       },
@@ -209,8 +223,6 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
               ),
             ),
           ),
-
-
 
 
             Positioned(
@@ -233,12 +245,14 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                 child: TextField(
                   controller: searchController,
                   onSubmitted: (String value) {
-                    termo.value = value.toString();
+                    setState(() {
+                      termo.value = value.toString();
+                    });
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    hintText: 'Busque seu carro aqui',
+                    hintText: 'Digite a marca, modelo, ano, cor ou/e carroceria',
                     prefixIcon: Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -280,8 +294,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                       message: 'Resetar Filtros',
                       child: IconButton(
                       onPressed: () {
-                        //refreshFiltros();
-                        print(valorRelev.value);
+                        refreshFiltros();
                       }, 
                     icon: const Icon(Icons.loop_outlined)),
                     ),
@@ -500,7 +513,9 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
                               hint: const Text("Relevancia"),
                               value: (value.isEmpty) ? null : value,
                               onChanged: (escolha) {
-                                valorRelev.value = escolha.toString();
+                                setState(() {
+                                   valorRelev.value = escolha.toString();
+                                });
                               },
                               items: relevancia.map((opcao) => DropdownMenuItem(
                                 value: opcao,

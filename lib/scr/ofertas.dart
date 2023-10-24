@@ -6,7 +6,7 @@ class CarroWidget extends StatefulWidget {
   final String modelo;
   final String cor;
   final int ano;
-  final double km;
+  final String km;
   final String localizacao;
   final String carroceria;
   final String condicao;
@@ -35,7 +35,7 @@ class CarroWidget extends StatefulWidget {
       modelo: json['modelo'],
       cor: json['cor'],
       ano: json['ano'],
-      km: json['km'], // Convertendo para double
+      km: json['kmM'],
       localizacao: json['localizacao'],
       carroceria: json['carroceria'],
       condicao: json['condicao'],
@@ -88,7 +88,6 @@ class _CarroWidgetState extends State<CarroWidget> {
         child: isMobile ? 
           Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ClipRRect(
               borderRadius: const BorderRadius.only(
@@ -109,17 +108,17 @@ class _CarroWidgetState extends State<CarroWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 4),
-                Text(widget.modelo + ' ' + widget.marca, style: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 30, 30, 30))),
+                Text(widget.modelo + ' \n' + widget.marca, style: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
                 Text(widget.precoM, style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 30, 30, 30))),
                 const SizedBox(height: 2),
-                Text('FIPE ' + widget.fipe, style: const TextStyle(fontSize: 10, color: Color.fromARGB(130, 30, 30, 30))),
+                Text('FIPE: ' + widget.fipe, style: const TextStyle(fontSize: 10, color: Color.fromARGB(130, 30, 30, 30))),
                 const SizedBox(height: 2),
                 Text(widget.cor + ' ' +  widget.carroceria + ' \n' + widget.condicao +  ' ' + widget.ano.toString() + ' ' + widget.km.toString() + ' km', style: TextStyle(fontSize: 8, color: Color.fromARGB(130, 30, 30, 30))),
               ],
             ),
 
-            const SizedBox(width: 30),
+            const SizedBox(width: 15),
 
             Column(
               children: [
@@ -140,8 +139,8 @@ class _CarroWidgetState extends State<CarroWidget> {
                 Text(widget.localizacao, style: TextStyle(fontSize: 10, color: Color.fromARGB(130, 30, 30, 30))),
 
                 ElevatedButton(
-                  onPressed: () {
-                    // colocar o link
+                  onPressed: () async {
+                     await launchUrlString(widget.site);
                   },
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all(Size(15, 30)),
@@ -240,8 +239,8 @@ class _CarroWidgetState extends State<CarroWidget> {
                 ),
 
                 ElevatedButton(
-                  onPressed: () {
-                    _launchURL(widget.site);
+                  onPressed: () async {
+                    await launchUrlString(widget.site);
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 15, 59, 80)), 
@@ -262,12 +261,5 @@ class _CarroWidgetState extends State<CarroWidget> {
       );
     }
     );
-  }
-  void _launchURL(String url) async {
-    if (await canLaunchUrlString(url)) {
-      await launchUrlString(url);
-    } else {
-      throw 'Não foi possível abrir a URL: $url';
-    }
   }
 }

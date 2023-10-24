@@ -8,33 +8,11 @@ const client = new MongoClient(mongodbUri);
 const app = express();
 
 app.use(express.json());
+
 const cors = require('cors');
 app.use(cors());
 
 let carrosCollection; // Variável global para a coleção de carros
-
-async function filtrarCarrosPorRelevancia(filtro, relevanciaEscolhida) {
-  let tipoRelevancia;
-
-  if (relevanciaEscolhida === "Maior Preço" || relevanciaEscolhida === "Menor Preço") {
-    tipoRelevancia = 'preco';
-  } else if (relevanciaEscolhida === "Maior KM" || relevanciaEscolhida === "Menor KM") {
-    tipoRelevancia = 'km';
-  }
-
-  const carrosFiltrados = await carrosCollection.find(filtro).toArray();
-
-  carrosFiltrados.sort((a, b) => {
-    if (tipoRelevancia === 'preco') {
-      return a.preco - b.preco;
-    } else if (tipoRelevancia === 'km') {
-      return a.km - b.km;
-    }
-    return 0;
-  });
-
-  return carrosFiltrados;
-}
 
 async function connectToMongoDB() {
   try {
@@ -52,10 +30,9 @@ connectToMongoDB().then(() => {
   app.get('/carrosFiltrados', async (req, res) => {
     try {
       const { termo, filtros, filtrosIntervalos, relevancia } = req.query;
-
       let filtro = {};
 
-      // Filtro de busca
+      // Filtro de busca (alguma melhoria que deixa que o usuário possa digitar esses valores em qualquer ordem)
       if (termo) {
         const regexTermo = new RegExp(termo, 'i');
         filtro = {
@@ -69,7 +46,7 @@ connectToMongoDB().then(() => {
         };
       }
 
-      //filtros do tipo igual
+      //filtros do tipo igual (adicionar a parte dos "outros")
       if (filtros) {
         Object.keys(JSON.parse(filtros)).forEach(chave => {
           filtro[chave] = JSON.parse(filtros)[chave];
@@ -93,18 +70,17 @@ connectToMongoDB().then(() => {
 
       // Ordena
       if (relevancia) {
-        const { relevancia: relevanciaEscolhida } = relevancia;
-
-        if (relevanciaEscolhida === "Menor Preço") {
+        if (relevancia === "Menor Preço") {
           const carrosFiltrados = await carrosCollection.find(filtro).sort({ preco: 1 }).toArray();
           res.json(carrosFiltrados);
-        } else if (relevanciaEscolhida === "Maior Preço") {
+        } else if (relevancia === "Maior Preço") {
           const carrosFiltrados = await carrosCollection.find(filtro).sort({ preco: -1 }).toArray();
+          console.log(carrosFiltrados);
           res.json(carrosFiltrados);
-        } else if (relevanciaEscolhida === "Menor KM") {
+        } else if (relevancia === "Menor KM") {
           const carrosFiltrados = await carrosCollection.find(filtro).sort({ km: 1 }).toArray();
           res.json(carrosFiltrados);
-        } else if (relevanciaEscolhida === "Maior KM") {
+        } else if (relevancia === "Maior KM") {
           const carrosFiltrados = await carrosCollection.find(filtro).sort({ km: -1 }).toArray();
           res.json(carrosFiltrados);
         } else {
@@ -113,6 +89,7 @@ connectToMongoDB().then(() => {
         }
       } else {
         const carrosFiltrados = await carrosCollection.find(filtro).toArray();
+      
         res.json(carrosFiltrados);
       }
 

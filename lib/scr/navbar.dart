@@ -44,7 +44,36 @@ import 'package:pi4sm/scr/pagina_pesquisa.dart';
               leading: const Icon(Icons.support_agent),
               title: const Text('Suporte', style: TextStyle(fontSize: 20)),
               onTap: () {
-                _launchURL();
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Mensagem do Suporte!'),
+                      content: const Text('Olá! caso esteja em um dispositivo mobile,\nentre em contato conosco pelo email:\n carhuntersofc@gmail.com'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 216, 7, 7))
+                          ),
+                          child: const Text('Fechar', style: TextStyle(color: Colors.white),),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Fecha o AlertDialog
+                            _launchURL(); // Chama a função _launchURL
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255,15, 59, 80))
+                          ),
+                          child: const Text('Estou em outro dispositivo!', style: TextStyle(color: Colors.white)),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
             const SizedBox(height: 10),

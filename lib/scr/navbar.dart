@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:pi4sm/scr/pagina_inicial.dart';
 import 'package:pi4sm/scr/pagina_usuario.dart';
 import 'package:pi4sm/scr/pagina_pesquisa.dart';
+import 'utils.dart';
 
   class NavBar extends StatelessWidget{
     @override
@@ -80,7 +81,8 @@ import 'package:pi4sm/scr/pagina_pesquisa.dart';
             ListTile(
               leading: const Icon(Icons.exit_to_app),
               title: const Text('Sair', style: TextStyle(fontSize: 20)),
-              onTap: () {
+              onTap: () async {
+                await setPopupExibido(false); // Define o valor como false
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const PaginaInicial()));
               },
             ),

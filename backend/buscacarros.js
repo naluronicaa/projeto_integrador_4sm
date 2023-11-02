@@ -20,7 +20,7 @@ async function connectToMongoDB() {
     console.log(`Conectado ao MongoDB`);
 
     const db = client.db("erapraseropi");
-    carrosCollection = db.collection("carros"); // Atribui a coleção à variável global
+    carrosCollection = db.collection("carros");
   } catch (err) {
     console.error("Erro ao conectar ao MongoDB: ", err);
   }

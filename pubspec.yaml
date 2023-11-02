@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
   url_launcher: ^6.0.13
   web_smooth_scroll: ^1.1.0
+  shared_preferences: ^2.0.12
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pi4sm/scr/navbar.dart';
 import 'package:pi4sm/scr/ofertas.dart';
 import 'package:pi4sm/scr/pagina_usuario.dart';
+import 'utils.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -104,7 +105,41 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
 
     fetchCarros(termo.value, filtros, filtrosIntervalos, valorRelev.value);
   }
+  
+  void mostrarPopup(BuildContext context) async {
+    bool popupJaExibido = await obterPopupExibido();
 
+    if (!popupJaExibido) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            content: Row(
+              children: [
+                Text("Você tem 10\nmoedas do CarHunters!", style: TextStyle(color: Color.fromARGB(255, 15, 59, 80), fontSize: 20)),
+                SizedBox(width: 20),
+                Image.asset('assets/coin.png', width: 50, height: 50), 
+                
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 15, 59, 80), // Defina a cor do botão aqui
+                ),
+                child: Text('OK', style: TextStyle(color: Colors.white),),
+              ),
+            ],
+          );
+        },
+      );
+      await setPopupExibido(true);
+    }
+  }
 
   final valorMarca = ValueNotifier('');
   final valorAno = ValueNotifier('');
@@ -153,6 +188,9 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
   
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      mostrarPopup(context);
+    });
     return Scaffold(
       extendBodyBehindAppBar: true,
       drawer: NavBar(),

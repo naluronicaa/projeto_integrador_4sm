@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart'; 
 import 'package:pi4sm/scr/navbar.dart';
+import 'package:pi4sm/scr/pagina_inicial.dart';
+import 'utils.dart';
 
 class PaginaUsuario extends StatefulWidget {
   const PaginaUsuario({super.key});
@@ -65,7 +67,7 @@ void _showEditModal(BuildContext context) {
 
               child: ElevatedButton(
               onPressed: () {
-                // Lógica para atualizar o nome
+                // Lógica para atualizar o email
                 Navigator.pop(context); // Fechar o modal após a ação
               },
               style: ButtonStyle(
@@ -77,32 +79,6 @@ void _showEditModal(BuildContext context) {
 
             ),
             
-            const SizedBox(height: 10),
-
-             const Text('Senha'),
-
-            const TextField(
-              decoration: InputDecoration(labelText: 'Nova Senha', labelStyle: TextStyle(color: Colors.grey)),
-            ),
-
-            const SizedBox(height: 10),
-            Container(
-              alignment: Alignment.centerRight,
-              width: 200, 
-              height: 50, 
-
-              child: ElevatedButton(
-              onPressed: () {
-                // Lógica para atualizar o nome
-                Navigator.pop(context); // Fechar o modal após a ação
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 15, 59, 80))
-              ),
-              child: Text('Atualizar Senha', style: TextStyle(color: Colors.white)),
-            ),
-            ),
-            
 
             const SizedBox(height: 30),
             Container(
@@ -111,10 +87,11 @@ void _showEditModal(BuildContext context) {
               height: 50, 
 
               child: ElevatedButton(
-              onPressed: () {
-                // Lógica para atualizar o nome
-                
-                Navigator.pop(context); // Fechar o modal após a ação
+              onPressed: () async {
+                // Lógica para deletar conta
+                await setPopupExibido(false);
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const PaginaInicial()));
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 216, 7, 7))

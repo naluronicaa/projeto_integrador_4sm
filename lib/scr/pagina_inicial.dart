@@ -37,7 +37,7 @@ class _PaginaInicialState extends State<PaginaInicial> {
 
   List informacoes = [
     "Agora com o Car Hunters ficou bem mais fácil de você encontrar o seu carro ideal.",
-    "Nosso objetivo é garantir que você consiga salvar dinheiro e tempo!",
+    "Nosso objetivo é garantir que você consiga salvar dinheiro e tempo! Principalmente agora com a nossa moeda!",
     "Entre com sua conta agora e encontre seu carro."
   ];
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'dart:convert';
 
 class CarroWidget extends StatefulWidget {
   final String marca;
@@ -13,7 +14,7 @@ class CarroWidget extends StatefulWidget {
   final String fipe;
   final String site;
   final String precoM;
-
+  final String? imagemBase64; 
 
   CarroWidget({
     required this.marca,
@@ -27,6 +28,7 @@ class CarroWidget extends StatefulWidget {
     required this.fipe,
     required this.site,
     required this.precoM,
+    this.imagemBase64,
 });
 
   factory CarroWidget.fromJson(Map<String, dynamic> json) {
@@ -42,12 +44,14 @@ class CarroWidget extends StatefulWidget {
       fipe: json['tabelaFipe'],
       site: json['site'],
       precoM: json['precoM'],
+      imagemBase64: json['imagem'],
     );
   }
 
   @override
   _CarroWidgetState createState() => _CarroWidgetState();
 }
+
 
 class _CarroWidgetState extends State<CarroWidget> {
   bool click = false;
@@ -94,13 +98,21 @@ class _CarroWidgetState extends State<CarroWidget> {
                 topLeft: Radius.circular(15),
                 bottomLeft: Radius.circular(15),
               ),
-              child: Image.asset(
-                'assets/car_default.png',
-                width: 40,
-                height: 115,
-                fit: BoxFit.cover,
-              ),
+              child: widget.imagemBase64 != null
+                  ? Image.memory(
+                      base64Decode(widget.imagemBase64!),
+                      width: 40,
+                      height: 115,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      'assets/car_default.png',
+                      width: 40,
+                      height: 115,
+                      fit: BoxFit.cover,
+                    ),
             ),
+
 
             const SizedBox(width: 5),
 
@@ -167,12 +179,19 @@ class _CarroWidgetState extends State<CarroWidget> {
                 topLeft: Radius.circular(15),
                 bottomLeft: Radius.circular(15),
               ),
-              child: Image.asset(
-                'assets/car_default.png',
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
-              ),
+              child: widget.imagemBase64 != null
+                  ? Image.memory(
+                      base64Decode(widget.imagemBase64!),
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      'assets/car_default.png',
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    ),
             ),
 
             //primeria parte (marca, modelo, preço, tabela FIPE)

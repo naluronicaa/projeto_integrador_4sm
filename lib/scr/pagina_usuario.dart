@@ -10,7 +10,7 @@ class PaginaUsuario extends StatefulWidget {
   State<PaginaUsuario> createState() => _PaginaUsuarioState();
 }
 
-//modal
+//modal CRUD                
 void _showEditModal(BuildContext context) {
   showModalBottomSheet(
     context: context,
@@ -73,7 +73,7 @@ void _showEditModal(BuildContext context) {
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255,15, 59, 80))
               ),
-              child: Text('Atualizar Email', style: TextStyle(color: Colors.white)),
+              child: const Text('Atualizar Email', style: TextStyle(color: Colors.white)),
             ),
 
 

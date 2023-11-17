@@ -13,6 +13,7 @@ class PaginaPrincipal extends StatefulWidget {
 }
 
 class PaginaPrincipalState extends State<PaginaPrincipal> {
+  
   List<String> marca = ["Renault", "Fiat", "Toyota", "Ford", "Chevrolet", "Honda", "Hyundai", "Mitsubishi", "Volkswagen", "Outra"];
   List<String> ano = ["abaixo de 2000","2000 - 2005", "2005 - 2010", "2010 - 2020", "acima de 2020"];
 
@@ -159,7 +160,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
   final ScrollController controleDeAnuncios = ScrollController();
 
   Future<List<CarroWidget>> fetchCarros(String termo, filtros, filtrosIntervalos, relev) async {
-    var url = Uri.parse("http://localhost:3001/carrosFiltrados?termo=$termo&filtros=${jsonEncode(filtros)}&filtrosIntervalos=${jsonEncode(filtrosIntervalos)}&relevancia=$relev");
+    var url = Uri.parse("http://localhost:3002/carrosFiltrados?termo=$termo&filtros=${jsonEncode(filtros)}&filtrosIntervalos=${jsonEncode(filtrosIntervalos)}&relevancia=$relev");
     try {
       var response = await http.get(url);
 
@@ -171,7 +172,7 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
         throw Exception('Falha ao carregar carros');
       }
     } catch (error){
-      var url = Uri.parse("http://10.2.130.76:3001/carrosFiltrados?termo=$termo&filtros=${jsonEncode(filtros)}&filtrosIntervalos=${jsonEncode(filtrosIntervalos)}&relevancia=$relev");
+      var url = Uri.parse("http://10.2.130.76:3002/carrosFiltrados?termo=$termo&filtros=${jsonEncode(filtros)}&filtrosIntervalos=${jsonEncode(filtrosIntervalos)}&relevancia=$relev");
       var response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -183,8 +184,6 @@ class PaginaPrincipalState extends State<PaginaPrincipal> {
       }
     }
   }
-
-
   
   @override
   Widget build(BuildContext context) {

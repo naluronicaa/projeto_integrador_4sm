@@ -4,6 +4,7 @@ import 'package:pi4sm/scr/pagina_inicial.dart';
 import 'package:pi4sm/scr/pagina_usuario.dart';
 import 'package:pi4sm/scr/pagina_pesquisa.dart';
 import 'utils.dart';
+import 'dart:math' as math;
 
   class NavBar extends StatelessWidget{
     @override
@@ -79,7 +80,11 @@ import 'utils.dart';
             ),
             const SizedBox(height: 10),
             ListTile(
-              leading: const Icon(Icons.exit_to_app),
+              leading:Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.rotationY(math.pi),
+                child: Icon(Icons.exit_to_app),
+              ),
               title: const Text('Sair', style: TextStyle(fontSize: 20)),
               onTap: () async {
                 await setPopupExibido(false); // Define o valor como false

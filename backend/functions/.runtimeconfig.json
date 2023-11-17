@@ -1,0 +1,6 @@
+{
+    "mongodb": {
+      "url": "mongodb+srv://luccaleca:muitochato10@carhuntersuser.hly2dmp.mongodb.net/"
+    },
+    "projectId": " carhunters-2b5e3"
+}

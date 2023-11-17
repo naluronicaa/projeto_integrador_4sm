@@ -2,7 +2,7 @@ const express = require('express');
 const { MongoClient } = require('mongodb');
 
 const mongodbUri = 'mongodb+srv://analuisaa:socorrodeus@teste.7tjmkgx.mongodb.net/';
-const port = 3001;
+const port = 3002;
 
 const client = new MongoClient(mongodbUri);
 const app = express();

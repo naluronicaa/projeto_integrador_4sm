@@ -58,17 +58,19 @@ class _CarroWidgetState extends State<CarroWidget> {
 
   Widget buildLogo() {
   if (widget.site.contains('webmotors')) {
-    // Use o logo da Webmotors
+    // logo da Webmotors
     return Image.asset('assets/logo_webm.png', width: 50, height: 50); // Substitua pelo caminho do seu logo da Webmotors
   } else if (widget.site.contains('olx')) {
-    // Use o logo da OLX
+    // logo da OLX
     return Image.asset('assets/logo_olx.png', width: 50, height: 50); // Substitua pelo caminho do seu logo da OLX
   } else if (widget.site.contains('icarros')) {
-    // Use o logo da iCarros
+    // logo da iCarros
     return Image.asset('assets/logo_icarros.png', width: 50, height: 50); // Substitua pelo caminho do seu logo da iCarros
+  } else if (widget.site.contains('mercadolivre')){
+    // logo Mercado livre
+    return Image.asset('assets/logo_mercado.png', width: 50, height: 50); // Substitua pelo caminho do seu logo padrão
   } else {
-    // Use o logo padrão se não for nenhuma das opções acima
-    return Image.asset('assets/logo_padrao.png', width: 50, height: 50); // Substitua pelo caminho do seu logo padrão
+    return Image.asset('assets/logo_HOC.png', width: 50, height: 50);
   }
 }
 

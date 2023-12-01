@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pi4sm/scr/navbar.dart';
 import 'package:pi4sm/scr/pagina_inicial.dart';
+import 'package:pi4sm/scr/ofertas.dart';
 import 'utils.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -267,6 +268,33 @@ class _PaginaUsuarioState extends State<PaginaUsuario> {
     );
   }
 
+  Future<List<CarroWidget>> fetchCarrosFavoritos(String email) async {
+    var url = Uri.parse("http://localhost:3002/favoritos/$email");
+    try {
+      var response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        List<dynamic> jsonList = json.decode(response.body);
+        List<CarroWidget> carros = jsonList.map((json) => CarroWidget.fromJson(json)).toList();
+        return carros;
+      } else {
+        throw Exception('Falha ao carregar carros');
+      }
+    } catch (error){
+      var url = Uri.parse("http://10.2.130.76:3001/favoritos/$email");
+      var response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        List<dynamic> jsonList = json.decode(response.body);
+        List<CarroWidget> carros = jsonList.map((json) => CarroWidget.fromJson(json)).toList();
+        return carros;
+      } else {
+        throw Exception('Falha ao carregar carros');
+      }
+    }
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -294,6 +322,58 @@ class _PaginaUsuarioState extends State<PaginaUsuario> {
         color: const Color.fromARGB(255, 237, 235, 235),
         child: Stack(
           children: [
+
+            Positioned(
+              top: 330,
+              left: 50,
+              right: 50,
+              child: Container(
+              padding: const EdgeInsets.all(10.0),
+              alignment: Alignment.center,
+              child: FutureBuilder<List<CarroWidget>>(
+                future: fetchCarrosFavoritos(email!),
+                builder: (BuildContext context, AsyncSnapshot<List<CarroWidget>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator(); 
+                  } else if (snapshot.hasError) {
+                    return Text('Erro ao carregar carros: ${snapshot.error}');
+                  } else if (snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Text('Não há nenhum favorito no momento 😟');
+                  } else {
+                    List<CarroWidget> carros = snapshot.data!;
+                    return ListView.separated(
+                      itemCount: carros.length,
+                      separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 15),
+                      itemBuilder: (BuildContext context, int index) {
+                        return carros[index]; 
+                      },
+                    );
+                  }
+                },
+              ),
+            ),
+            ),
+
+            const Positioned(
+              top: 310,
+              left: 50,
+              right: 800,
+              child: Text(
+                "Favoritos",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 15, 59, 80)),
+              ),
+            ),
+
+            Positioned(
+              top: 100,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(50.0),
+                color: const Color.fromARGB(150, 135, 157, 168),
+              ),
+            ),
+
             Positioned(
               top: 100,
               left: 0,
@@ -356,8 +436,7 @@ class _PaginaUsuarioState extends State<PaginaUsuario> {
                         iconSize: 20,
                       ),
                     ],
-                  ) // Espaço entre o ícone e o texto
-                  // IconButton ao lado do texto
+                  )
                 ],
               ),
             ),

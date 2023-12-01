@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'utils.dart';
+import 'package:http/http.dart' as http;
 
 class CarroWidget extends StatefulWidget {
+  final String id;
   final String marca;
   final String modelo;
   final String cor;
@@ -17,6 +20,7 @@ class CarroWidget extends StatefulWidget {
   final String? imagemBase64;
 
   CarroWidget({
+    required this.id,
     required this.marca,
     required this.modelo,
     required this.cor,
@@ -33,6 +37,7 @@ class CarroWidget extends StatefulWidget {
 
   factory CarroWidget.fromJson(Map<String, dynamic> json) {
     return CarroWidget(
+      id : json['_id'],
       marca: json['marca'],
       modelo: json['modelo'],
       cor: json['cor'],
@@ -53,7 +58,89 @@ class CarroWidget extends StatefulWidget {
 }
 
 class _CarroWidgetState extends State<CarroWidget> {
-  bool click = false;
+  bool isFavorito = false;
+
+  Future<void> adicionarVeiculoFavorito(String email, Map<String, dynamic> carro) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://localhost:3001/favoritos/adicionar'),
+        body: {
+          'email': email,
+          'carro': jsonEncode(carro),
+        },
+      );
+      // Trate a resposta conforme necessário
+    } catch (error) {
+      // Trate os erros de requisição, se necessário
+    }
+  }
+
+  Future<void> removerVeiculoFavorito(String email, String carroId) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('http://localhost:3001/favoritos/remover'),
+        body: {
+          'email': email,
+          'carroId': carroId,
+        },
+      );
+      // Trate a resposta conforme necessário
+    } catch (error) {
+      // Trate os erros de requisição, se necessário
+    }
+  }
+
+  Future<bool> verificarSeCarroEFavorito(String email, String carId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://localhost:3001/favoritos/$email/$carId'),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        return data['isFavorito'];
+      } else {
+        // Trate aqui os possíveis erros de requisição
+        return false;
+      }
+    } catch (error) {
+      // Trate os erros de requisição, se necessário
+      return false;
+    }
+  }
+
+
+  Future<void> _atualizarFavorito() async {
+    String carId = widget.id;
+    String? email = await obterEmail();
+    if (email != null) {
+      bool isCarroFavorito = await verificarSeCarroEFavorito(email, carId);
+
+      if (!isCarroFavorito) {
+        await adicionarVeiculoFavorito(email, {
+          'id': widget.id,
+          'marca': widget.marca,
+          'modelo': widget.modelo,
+          'cor': widget.cor,
+          'ano': widget.ano,
+          'km': widget.km,
+          'localizacao': widget.localizacao,
+          'carroceria': widget.carroceria,
+          'condicao': widget.condicao,
+          'fipe': widget.fipe,
+          'site': widget.site,
+          'precoM': widget.precoM,
+          'imagem': widget.imagemBase64,
+        });
+      } else {
+        await removerVeiculoFavorito(email, carId);
+      }
+
+      setState(() {
+        isFavorito = isCarroFavorito;
+      });
+    }
+  }
 
   Widget buildLogo() {
     if (widget.site.contains('webmotors')) {
@@ -161,16 +248,18 @@ class _CarroWidgetState extends State<CarroWidget> {
                           children: [
                             buildLogo(),
                             IconButton(
-                              onPressed: () {
+                              onPressed: () async {
+                                await _atualizarFavorito();
                                 setState(() {
-                                  click = !click;
+                                  isFavorito = !isFavorito;
                                 });
                               },
                               icon: Icon(
-                                  (click == true)
-                                      ? Icons.star
-                                      : Icons.star_border,
-                                  color: Color.fromARGB(255, 223, 173, 44)),
+                                (isFavorito == true)
+                                    ? Icons.star
+                                    : Icons.star_border,
+                                color: Color.fromARGB(255, 223, 173, 44),
+                              ),
                             )
                           ],
                         ),
@@ -304,17 +393,18 @@ class _CarroWidgetState extends State<CarroWidget> {
                           children: [
                             buildLogo(),
                             IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  click = !click;
-                                });
-                              },
-                              icon: Icon(
-                                  (click == true)
+                                onPressed: () async {
+                                  await _atualizarFavorito();
+                                  setState(() {
+                                    isFavorito = !isFavorito;
+                                  });
+                                },
+                                icon: Icon(
+                                  (isFavorito == true)
                                       ? Icons.star
                                       : Icons.star_border,
-                                  color:
-                                      const Color.fromARGB(255, 223, 173, 44)),
+                                  color: Color.fromARGB(255, 223, 173, 44),
+                                ),
                             )
                           ],
                         ),

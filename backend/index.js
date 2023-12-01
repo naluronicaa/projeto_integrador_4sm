@@ -364,4 +364,100 @@ app.post('/login', async (req, res) => {
   }
 }
 
+
+// Rota para adicionar um carro aos favoritos do usuário
+app.post('/favoritos/adicionar', async (req, res) => {
+  const { email, carro } = req.body;
+
+  try {
+    const db = client.db('erapraseropi');
+    const collection = db.collection('usuarios');
+
+    // Atualiza a lista de favoritos do usuário com o novo carro
+    const result = await collection.updateOne(
+      { email },
+      { $addToSet: { favoritos: carro } } // Usando $addToSet para evitar duplicatas
+    );
+
+    if (result.modifiedCount > 0) {
+      res.status(200).json({ message: 'Carro adicionado aos favoritos do usuário' });
+    } else {
+      res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+  } catch (error) {
+    console.error('Erro ao adicionar carro aos favoritos:', error);
+    res.status(500).json({ message: 'Erro ao adicionar carro aos favoritos' });
+  }
+});
+
+
+// Rota para remover um carro dos favoritos do usuário
+app.delete('/favoritos/remover', async (req, res) => {
+  const { email, carId } = req.body;
+
+  try {
+    const db = client.db('erapraseropi');
+    const collection = db.collection('usuarios');
+
+    // Remove o carro da lista de favoritos do usuário
+    const result = await collection.updateOne(
+      { email },
+      { $pull: { favoritos: carId } } // Remove o carro da lista de favoritos
+    );
+
+    if (result.modifiedCount > 0) {
+      res.status(200).json({ message: 'Carro removido dos favoritos do usuário' });
+    } else {
+      res.status(404).json({ message: 'Usuário não encontrado ou o carro não estava nos favoritos' });
+    }
+  } catch (error) {
+    console.error('Erro ao remover carro dos favoritos:', error);
+    res.status(500).json({ message: 'Erro ao remover carro dos favoritos' });
+  }
+});
+
+
+// Verificar se um carro está nos favoritos de um usuário
+app.get('/favoritos/:email/:carId', async (req, res) => {
+  const { email, carId } = req.params;
+
+  try {
+    const db = client.db('erapraseropi');
+    const collection = db.collection('usuarios');
+
+    // Encontra o usuário com o email fornecido
+    const usuario = await collection.findOne({ email });
+
+    if (!usuario || !usuario.favoritos || usuario.favoritos.length === 0) {
+      res.status(200).json({ isFavorito: false }); // Se o usuário não existe ou não tem favoritos
+    } else {
+      // Verifica se o carro está nos favoritos do usuário
+      const isFavorito = usuario.favoritos.includes(carId);
+
+      res.status(200).json({ isFavorito });
+    }
+  } catch (error) {
+    console.error('Erro ao verificar se o carro está nos favoritos:', error);
+    res.status(500).json({ message: 'Erro ao verificar se o carro está nos favoritos' });
+  }
+});
+
+
+
+//pegar os favoritos
+app.get('/favoritos/:email', async (req, res) => {
+  try {
+    const { email } = req.params;
+
+    // Buscar os carros favoritos do usuário pelo email
+    const favoritos = await Favoritos.find({ email });
+
+    res.status(200).json({ favoritos });
+  } catch (error) {
+    console.error('Erro ao buscar os carros favoritos:', error);
+    res.status(500).json({ message: 'Erro ao buscar os carros favoritos' });
+  }
+});
+
+
 connectToMongoDB();
